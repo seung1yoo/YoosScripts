@@ -12,6 +12,9 @@ class CLEAN2REF():
 
         B. Tool (-p, --program) - I will update...
          a. Tophat2
+
+        C. Indexed Reference - I will update with "B.Tool"
+         a. bowtie2-build
         '''
         print massage
         self.configure = self.file_checker(configure)
@@ -27,6 +30,7 @@ class CLEAN2REF():
             print '#FILE CHECK : OKAY : {0}'.format(source)
         else:
             print '#FILE CHECK : FAIL : {0}'.format(source)
+            print '#STOP process.'
             sys.exit()
         return source
 
@@ -51,9 +55,9 @@ class CLEAN2REF():
         return program_path_dic[program]
 
     def bowtie2_exe(self, sample, tagDic):
-        cmd = '{0} -o {1} -p 30 -r 350 --mate-std-dev 150 --library-type fr-unstranded -G {2} '\
-                '{3} {4} {5}'.format(self.program, sample, self.gff,
-                 self.ref, tagDic['1'], tagDic['2'])
+        cmd = '{0} -o {1} -p 30 -r 300 --mate-std-dev 200 --library-type fr-unstranded -G {2} '\
+                '{3} {4},{5} {6},{7}'.format(self.program, sample, self.gff,
+                 self.ref, tagDic['1P'], tagDic['1U'], tagDic['2P'], tagDic['2U'])
         print cmd
         os.system(cmd)
 
@@ -66,10 +70,11 @@ def main(args):
 
 if __name__=='__main__':
     import os
+    import sys
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--configure', default='configure_example.csv')
-    parser.add_argument('-p', '--program', default='Tophat2')
+    parser.add_argument('-p', '--program', choices=['Tophat2'], default='Tophat2')
     parser.add_argument('-f', '--gff', default='/BiO/BioPeople/siyoo/01.FNP-Strawberry-Transcriptome-201604/00.Ref/ncbi/ref_FraVesHawaii_1.0_top_level.keep.gff3')
     parser.add_argument('-r', '--ref', default='/BiO/BioPeople/siyoo/01.FNP-Strawberry-Transcriptome-201604/00.Ref/ncbi/101020_ref_FraVesHawaii_1.0.all.rename')
     args = parser.parse_args()
