@@ -1,0 +1,1 @@
+java -Xmx1G -cp /Users/Yoo/Documents/YooScripts/GSEA/gsea2-2.2.1.jar xtools.gsea.Gsea -res Arabidopsis.exp.txt -cls Arabidopsis.cls#Control_versus_Salt -gmx Arabidopsis.gmt -chip Arabidopsis.chip -permute gene_set -collapse false -plot_top_x 100 -out Ara_gsea_GO_v2 -rpt_label Ara_Control_vs_Salt
