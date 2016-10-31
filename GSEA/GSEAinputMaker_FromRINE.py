@@ -10,8 +10,8 @@ def annoDicMaker(xml):
     annoDic = dict()
     for line in open(xml):
         items = line.strip().split('\t')
-        #if items[0] in ['Order']: ## genes.xls version
-        if items[0] in ['GeneId']: ## genes.de.xls version
+        if items[0] in ['Order']: ## genes.xls version
+        #if items[0] in ['GeneId']: ## genes.de.xls version
             #print (dir(items))
             go_idx = items.index('GeneOntology')
             probe_idx = items.index('GeneId')
@@ -72,8 +72,8 @@ def expFilter(xml, log2fc, statistics, value):
     for line in open(xml):
         filtered = 0
         items = line.strip().split('\t')
-        #if items[0] in ['Order']: ## genes.xls version
-        if items[0] in ['GeneId']: ## genes.de.xls version
+        if items[0] in ['Order']: ## genes.xls version
+        #if items[0] in ['GeneId']: ## genes.de.xls version
             import re
             probe_idx = items.index('GeneId')
             #gene_idx = items.index('GeneName') ## GeneName version
@@ -81,7 +81,7 @@ def expFilter(xml, log2fc, statistics, value):
             desc_idx = items.index('Desc')
             exp_idxs = [i for i, item in enumerate(items) if re.search('^EXP', item)]
             samples = [items[x] for x in exp_idxs]
-            log2fc_idxs = [i for i, item in enumerate(items) if re.search('fc$', item.strip("\""))]
+            log2fc_idxs = [i for i, item in enumerate(items) if re.search('Log2FC$', item.strip("\""))]
             log2fc_cols = [items[x] for x in log2fc_idxs]
             if statistics in ['p']:
                 v_idxs = [i for i, item in enumerate(items) if re.search('PV$', item.strip("\""))]
@@ -238,7 +238,7 @@ if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--go-table', help='My database',
-            default='/Users/Yoo/Documents/YooScripts/Databases/Ontology_Archives/gene_ontology_edit.obo.2016-06-01.table')
+            default='../Ontology_Archives/gene_ontology_edit.obo.2016-06-01.table')
     parser.add_argument('-x', '--xml', help='genes.xml',
             default='/Volumes/TBI_siyoo/TBI_Research/06_DKU/00_Prof_HanGD/Tapes/RNAseq/DKU_Han-Venerupis-2016-03_V1_Ref_P005/Files/genes.xls')
     parser.add_argument('-s', '--species', help='species name or prefix name',
