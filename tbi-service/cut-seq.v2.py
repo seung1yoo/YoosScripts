@@ -6,7 +6,7 @@ def cutadapt_exe(cutLen, outputFastq, inputFastq):
 
 def fileFinder(path, extension):
     cmd = 'find {0} -iname *.{1} > ./fileFinder.result'.format(path, extension)
-    #print cmd
+    print cmd
     os.system(cmd)
     files = []
     for line in open('./fileFinder.result'):
@@ -18,7 +18,7 @@ def main(args):
     for file in files:
         inputFastq = file
         outputFastq = '{0}{1}.{2}'.format(file.split(args.extension)[0],
-                args.cutLen, args.extension)
+                str(int(args.oriLen)-int(args.cutLen)), args.extension)
         #print inputFastq, outputFastq
         cutadapt_exe(args.cutLen, outputFastq, inputFastq)
 
@@ -35,5 +35,7 @@ if __name__=='__main__':
             default='fastq.gz')
     parser.add_argument('-c', '--cutLen',
             default=50)
+    parser.add_argument('-o', '--oriLen',
+            default=151)
     args = parser.parse_args()
     main(args)
