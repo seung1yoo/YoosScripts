@@ -1,1 +1,26 @@
 http://www.novocraft.com/documentation/novoalign-2/novoalign-ngs-quick-start-tutorial/1040-2/
+
+###Align your reads with Novoalign (Illumina)
+
+novoalign -d database.nix -f reads1.fastq -reads2.fastq -oSAM  -i 500 100 | samtools view -bS - alignments
+
+###Filter Alignments for unmapped pairs
+
+#Next up we create three filter categories for:
+#1. An unmapped read whose mate is mapped.
+#2. A mapped read who’s mate is unmapped
+#3. Both reads of the pair are unmapped
+#These categories translate to the following filtering commands:
+
+samtools view -u  -f 4 -F264 alignments.bam  > tmps1.bam
+samtools view -u -f 8 -F 260 alignments.bam  > tmps2.bam
+samtools view -u -f 12 -F 256 alignments.bam > tmps3.bam
+
+#The above step will work on sorted or unsorted BAM files.
+#We then merge these temporary bam files and sort into read name order. The sort is required to get the mates into the correct order.
+
+samtools merge -u - tmps[123].bam | samtools sort -n - unmapped
+
+#Extract the reads in FASTQ format
+
+bamToFastq -bam unmapped.bam -fq1 unmapped_reads1.fastq -fq2 unmapped_reads2.fastq
