@@ -1,3 +1,0 @@
-#!/bin/sh
-cd `dirname "$0"`
-util/jre/bin/java -Djava.library.path=util/lib/native/ -classpath util/lib/activation.jar:util/lib/axis.jar:util/lib/commons-discovery-0.2.jar:util/lib/commons-lang3-3.1.jar:util/lib/javax.wsdl_1.5.1.v201005080630.jar:util/lib/jaxrpc.jar:util/lib/LicenseDownloader.jar:util/lib/LMX.jar:util/lib/mail.jar:util/lib/org.apache.commons.logging_1.0.4.v201005080501.jar:util/lib/saaj.jar com.clcbio.licensedownload.CellLicenseDownloader
