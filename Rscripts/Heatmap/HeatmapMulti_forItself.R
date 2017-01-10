@@ -12,8 +12,8 @@ source_url("https://raw.githubusercontent.com/obigriffith/biostar-tutorials/mast
 
 #Load data
 setwd("~/Downloads/nubchi")
-fn = "genes.90.addDEG.exp.csv"
-data <- read.csv(fn, header = TRUE, row.names = 1)
+fn = "genes.90.addDEG.virulence.heatmap.xls"
+data <- read.table(fn, sep = "\t", header = TRUE, row.names = 1)
 data <- as.matrix(data)
 dim(data)
 head(data)
@@ -38,11 +38,11 @@ colnames(data)
 #clab=cbind(subtype_colors,Mcolors,Ncolors,Tcolors,HER2colors,PRcolors,ERcolors)
 #colnames(clab)=c("Subtype","M","N","T","HER2","PR","ER")
 colnames(data)
-dayColors=c("red","blue","green","red","blue","green","red","blue","green","red","blue","green")
-treatColors=c("cyan","cyan","cyan","pink","pink","pink","cyan","cyan","cyan","pink","pink","pink")
-virulenceColors=c("black","black","black","black","black","black","grey","grey","grey","grey","grey","grey")
-clab=cbind(dayColors,treatColors,virulenceColors)
-colnames(clab)=c("TimeSeries","SampleType","Virulence")
+timeColors=c("lightpink1","lightpink2","lightpink3","lightpink1","lightpink2","lightpink3","lightpink1","lightpink2","lightpink3")
+treatColors=c("darkorchid1","darkorchid1","darkorchid1","darkorchid3","darkorchid3","darkorchid3","darkorchid1","darkorchid1","darkorchid1")
+virulenceColors=c('gold2','gold2','gold2','gold3','gold3','gold3','gold4','gold4','gold4')
+clab=cbind(timeColors,treatColors,virulenceColors)
+colnames(clab)=c("TimeSeries Comparison","Treatment Comparison","Virulence Comparison")
 colnames(clab)
 
 ### make heat-map roughly
@@ -64,10 +64,10 @@ for(i in 1:length(cluster.method.list)){
 
 ### make heatmap.3 clearly with categories (ColSideColors=clab, RowSideColors=rlab)
 main_title="DEG of Virulence pairs"
-mydist=function(c) {dist(c,method="euclidean")}
-myclust=function(c) {hclust(c,method="centroid")}
+mydist=function(c) {dist(c,method="minkowski")}
+myclust=function(c) {hclust(c,method="complete")}
 par(cex.main=1)
-heatmap.3(data, hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(15,10),
+heatmap.3(data, hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(30,10),
           Rowv=TRUE, Colv=TRUE, ColSideColors=clab, symbreaks=FALSE, key=TRUE, symkey=FALSE,
           density.info="none", trace="none", main=main_title, labCol=colnames(data), labRow=FALSE, cexRow=1, col=myPalette,
           ColSideColorsSize=3, RowSideColorsSize=2, KeyValueName=FALSE)
