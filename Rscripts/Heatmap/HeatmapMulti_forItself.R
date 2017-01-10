@@ -1,30 +1,59 @@
-setwd("/Volumes/TBI_siyoo/TBI_Research/04_GNU/01.KimEuiYeon_TBD160336/5.GSEAv2/goInfo/CHLOROPHYLLIDE_A_OXYGENASE_[OVERALL]_ACTIVITY")
-fn = "exp.txt"
-setwd("/Volumes/TBI_siyoo/TBI_Research/04_GNU/02.BackDongWon_TBD160282/2.Analysis/report/GSEAv2/Ara_gsea_GO/Top5GO/")
-fn = "total_exp.redupl.txt"
+#If not already installed
+#install.packages("gplots")
+#install.packages("devtools")
 
-setwd("/Volumes/TBI_siyoo/TBI_Research/DKU_HGD_Tapes_TBD150282/RNAseq/DKU_Han-Venerupis-2016-03_V1_Ref_P005/GSEA/Tapes_gsea_v2/heatmap/")
-fn = "Tapes.exp.txt"
-data <- data[c("AGAMI","KWANJA","BAL")]
+#Load necessary packages
+library("gplots")
+library("devtools")
+library("RColorBrewer")
 
-data <- read.table(fn, sep="\t", header = TRUE, row.names = 1, quote = "")
+#Load latest version of heatmap.3 function
+source_url("https://raw.githubusercontent.com/obigriffith/biostar-tutorials/master/Heatmaps/heatmap.3.R")
+
+#Load data
+setwd("~/Downloads/nubchi")
+fn = "genes.90.addDEG.exp.csv"
+data <- read.csv(fn, header = TRUE, row.names = 1)
 data <- as.matrix(data)
 dim(data)
 head(data)
-library(gplots)
-library("RColorBrewer")
+rownames(data)
+colnames(data)
 
-dist2 <- function(x, ...)
-  as.dist(1-cor(t(x), method="pearson"))
 
+#Create fake color side bars
+##rownames(data)
+#drugclass_colors=sample(c("darkorchid","darkred"), length(drug_names), replace = TRUE, prob = NULL)
+#drugcategory_colors=sample(c("green","darkgreen"), length(drug_names), replace = TRUE, prob = NULL)
+#rlab=t(cbind(drugclass_colors,drugcategory_colors))
+#rownames(rlab)=c("Class","Category")
+##colnames(data)
+#subtype_colors=sample(c("red","blue","cyan","pink","yellow","green"), length(patient_ids), replace = TRUE, prob = NULL)
+#Mcolors=sample(c("black","white","grey"), length(patient_ids), replace = TRUE, prob = NULL)
+#Ncolors=sample(c("black","white","grey"), length(patient_ids), replace = TRUE, prob = NULL)
+#Tcolors=sample(c("black","white","grey"), length(patient_ids), replace = TRUE, prob = NULL)
+#HER2colors=sample(c("black","white","grey"), length(patient_ids), replace = TRUE, prob = NULL)
+#PRcolors=sample(c("black","white","grey"), length(patient_ids), replace = TRUE, prob = NULL)
+#ERcolors=sample(c("black","white","grey"), length(patient_ids), replace = TRUE, prob = NULL)
+#clab=cbind(subtype_colors,Mcolors,Ncolors,Tcolors,HER2colors,PRcolors,ERcolors)
+#colnames(clab)=c("Subtype","M","N","T","HER2","PR","ER")
+colnames(data)
+dayColors=c("red","blue","green","red","blue","green","red","blue","green","red","blue","green")
+treatColors=c("cyan","cyan","cyan","pink","pink","pink","cyan","cyan","cyan","pink","pink","pink")
+virulenceColors=c("black","black","black","black","black","black","grey","grey","grey","grey","grey","grey")
+clab=cbind(dayColors,treatColors,virulenceColors)
+colnames(clab)=c("TimeSeries","SampleType","Virulence")
+colnames(clab)
+
+### make heat-map roughly
+#dist2 <- function(x, ...)
+#  as.dist(1-cor(t(x), method="pearson"))
 myPalette <- colorRampPalette(rev(brewer.pal(5, "RdBu")))
-cluster.method.list <- c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
 distance.method.list <- c("euclidean", "maximum", "manhattan", "minkowski")
-
+cluster.method.list <- c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
 for(i in 1:length(cluster.method.list)){
   for(j in 1:length(distance.method.list)){
       png(paste(c(cluster.method.list[i],"_", distance.method.list[j],".png"),collapse=""), width=2000, height=2000)
-      #heatmap.2(log2(data+0.1), col=myPalette, labRow = "", scale="row", trace="none", key=FALSE, cexCol=3, cexRow=2, lhei=c(2,20), margins=c(20,20),   hclustfun = function(x) hclust(x,method = cluster.method.list[i]), distfun = function(x) dist(x,method =distance.method.list[j]))
       heatmap.2(log2(data+0.1), col=myPalette, scale="row", trace="none", cexCol=3, cexRow=2, lhei=c(2,20), 
                 margins=c(20,20), labRow="",
                 hclustfun = function(x) hclust(x,method = cluster.method.list[i]), 
@@ -33,6 +62,19 @@ for(i in 1:length(cluster.method.list)){
     }
 }
 
-png("heatmap.png",width=1024,height=1024)
-heatmap.2(log2(data+0.1), col=myPalette, trace="none", cexRow=0.7, cexCol=1, margins=c(7,8), labRow="")
-dev.off()
+### make heatmap.3 clearly with categories (ColSideColors=clab, RowSideColors=rlab)
+main_title="DEG of Virulence pairs"
+mydist=function(c) {dist(c,method="euclidean")}
+myclust=function(c) {hclust(c,method="centroid")}
+par(cex.main=1)
+heatmap.3(data, hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(15,10),
+          Rowv=TRUE, Colv=TRUE, ColSideColors=clab, symbreaks=FALSE, key=TRUE, symkey=FALSE,
+          density.info="none", trace="none", main=main_title, labCol=colnames(data), labRow=FALSE, cexRow=1, col=myPalette,
+          ColSideColorsSize=3, RowSideColorsSize=2, KeyValueName=FALSE)
+legend("topright",
+       legend=c("Highly virulence","Low virulence","","Control","virus","","1 day","3 day","1 week"),
+       fill=c("black","grey","white","pink","cyan","white","red","blue","green"), 
+       border=TRUE, bty="n", y.intersp = 0.9, cex=0.9)
+
+#legend=c("Basal","LumA","LumB","Her2","Claudin","Normal","","Positive","Negative","NA","","Targeted","Chemo","","Approved","Experimental"),
+#fill=c("red","blue","cyan","pink","yellow","green","white","black","white","grey","white","darkorchid","darkred","white","green","darkgreen"), 
