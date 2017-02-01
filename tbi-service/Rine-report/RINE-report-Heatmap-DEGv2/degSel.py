@@ -38,23 +38,40 @@ def main(args):
                     #print('#CHECK-idxDic =', criteria, col, item)
                     pass
             continue
-        #print(items)
-        #selector by "Log2FC"
-        targets, filtereds = selector('Log2FC', args.foldChange, items, idxDic)
-        if len(targets) in [len(filtereds)]:
-            select_tags.append('Log2FC')
-        #selector by "PV"
-        targets, filtereds = selector('PV', args.p_value, items, idxDic)
-        if len(targets) in [len(filtereds)]:
-            select_tags.append('PV')
-        #selector by "QV"
-        targets, filtereds = selector('QV', args.q_value, items, idxDic)
-        if len(targets) in [len(filtereds)]:
-            select_tags.append('QV')
+        ## VER 1. Selected DEGs must be in all DEG sets
+        ##selector by "Log2FC"
+        #targets, filtereds = selector('Log2FC', args.foldChange, items, idxDic)
+        #if len(targets) in [len(filtereds)]:
+        #    select_tags.append('Log2FC')
+        ##selector by "PV"
+        #targets, filtereds = selector('PV', args.p_value, items, idxDic)
+        #if len(targets) in [len(filtereds)]:
+        #    select_tags.append('PV')
+        ##selector by "QV"
+        #targets, filtereds = selector('QV', args.q_value, items, idxDic)
+        #if len(targets) in [len(filtereds)]:
+        #    select_tags.append('QV')
+        #if select_tags in [['Log2FC', 'PV', 'QV']]:
+        #    out.write(line)
+        #    print(items[0:2], select_tags)
 
-        if select_tags in [['Log2FC', 'PV', 'QV']]:
+        ## VER 2. Selected DEGs must be in at least one DEG set
+        degDic = dict()
+        for criteria, colDic in idxDic.items():
+            for col, item in colDic.items():
+                deg_tag = item.split(':')[1]
+                degDic.setdefault(deg_tag, {}).setdefault(criteria, float(items[col]))
+
+        selected_degs = []
+        for deg_tag, criteriaDic in degDic.items():
+            #print(deg_tag, criteriaDic['Log2FC'])
+            #print(deg_tag, criteriaDic['PV'])
+            #print(deg_tag, criteriaDic['QV'])
+            if abs(criteriaDic['Log2FC']) >= args.foldChange and criteriaDic['PV'] <= args.p_value and criteriaDic['QV'] <= args.q_value:
+                selected_degs.append(deg_tag)
+
+        if selected_degs:
             out.write(line)
-            print(items[0:2], select_tags)
     out.close()
 
 if __name__=='__main__':

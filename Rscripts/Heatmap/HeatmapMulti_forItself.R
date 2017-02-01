@@ -12,7 +12,7 @@ source_url("https://raw.githubusercontent.com/obigriffith/biostar-tutorials/mast
 
 #Load data
 setwd("~/Downloads/nubchi")
-fn = "genes.90.addDEG.virulence.heatmap.xls"
+fn = "genes.90.addDEG.pathogenic.int.fc2p005q001.txt"
 data <- read.table(fn, sep = "\t", header = TRUE, row.names = 1)
 data <- as.matrix(data)
 dim(data)
@@ -49,11 +49,12 @@ head(data,1)
 #clab=cbind(subtype_colors,Mcolors,Ncolors,Tcolors,HER2colors,PRcolors,ERcolors)
 #colnames(clab)=c("Subtype","M","N","T","HER2","PR","ER")
 colnames(data)
-timeColors=c("lightpink1","lightpink2","lightpink3","lightpink1","lightpink2","lightpink3")
-treatColors=c("darkorchid1","darkorchid1","darkorchid1","darkorchid1","darkorchid1","darkorchid1")
-virulenceColors=c('gold2','gold2','gold2','gold4','gold4','gold4')
+timeColors=c("lightpink1","lightpink2","lightpink3","lightpink1","lightpink2","lightpink3","lightpink1","lightpink2","lightpink3","lightpink1","lightpink2","lightpink3")
+treatColors=c("darkorchid","darkorchid","darkorchid","darkorchid1","darkorchid1","darkorchid1","darkorchid","darkorchid","darkorchid","darkorchid1","darkorchid1","darkorchid1")
+virulenceColors=c('gold2','gold2','gold2','gold2','gold2','gold2','gold4','gold4','gold4','gold4','gold4','gold4')
 clab=cbind(timeColors,treatColors,virulenceColors)
-colnames(clab)=c("TimeSeries Comparison","Treatment Comparison","Virulence Comparison")
+clab
+colnames(clab)=c("TimeSeries","Treatment","Virulence")
 colnames(clab)
 
 ### make heat-map roughly
@@ -66,7 +67,7 @@ for(i in 1:length(cluster.method.list)){
   for(j in 1:length(distance.method.list)){
       png(paste(c(cluster.method.list[i],"_", distance.method.list[j],".png"),collapse=""), width=2000, height=2000)
       heatmap.2(log2(data+0.1), col=myPalette, scale="row", trace="none", cexCol=3, cexRow=2, lhei=c(2,20), 
-                margins=c(20,20), labRow="",
+                margins=c(40,20), labRow="",
                 hclustfun = function(x) hclust(x,method = cluster.method.list[i]), 
                 distfun = function(x) dist(x,method =distance.method.list[j]))
       dev.off()
@@ -74,12 +75,12 @@ for(i in 1:length(cluster.method.list)){
 }
 
 ### make heatmap.3 clearly with categories (ColSideColors=clab, RowSideColors=rlab)
-main_title="DEG of Virulence pairs"
-mydist=function(c) {dist(c,method="minkowski")}
-myclust=function(c) {hclust(c,method="complete")}
+main_title=""
+mydist=function(c) {dist(c,method="euclidean")}
+myclust=function(c) {hclust(c,method="ward.D")}
 myPalette <- colorRampPalette(rev(brewer.pal(5, "RdBu")))
 par(cex.main=1)
-heatmap.3(data, hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(30,10),
+heatmap.3(log2(data+0.1), hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(15,10),
           Rowv=TRUE, Colv=TRUE, ColSideColors=clab, symbreaks=FALSE, 
           key=TRUE, keysize = 1, symkey=FALSE,
           density.info="none", trace="none", main=main_title, labCol=colnames(data), labRow=FALSE, cexRow=1, cexCol=1.3, 
@@ -87,8 +88,8 @@ heatmap.3(data, hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", de
 # legend : Specify legend position by keywords
 # http://www.sthda.com/english/wiki/add-legends-to-plots-in-r-software-the-easiest-way
 legend("topright", inset = .02,
-       legend=c("High vs High","Low vs Low","","Control vs virus     ","","1d vs 1d","3d vs 3d","1w vs 1w"),
-       fill=c("gold2","gold4","white","darkorchid1","white","lightpink1","lightpink2","lightpink3"), 
+       legend=c("High","Low","","Control","virus","","1d","3d","7d"),
+       fill=c("gold2","gold4","white","darkorchid1","darkorchid","white","lightpink1","lightpink2","lightpink3"), 
        border=FALSE, bty="n", angle = 90, y.intersp = 1, cex=0.7)
 
 #legend=c("Basal","LumA","LumB","Her2","Claudin","Normal","","Positive","Negative","NA","","Targeted","Chemo","","Approved","Experimental"),
