@@ -1,0 +1,9 @@
+
+
+
+input : Rine report genes.xls
+
+1. modified str2int.py
+       for '-' -> '0.00'
+2. python str2int.py
+3. python degSel.py -x genes.int.xls -fc ...
