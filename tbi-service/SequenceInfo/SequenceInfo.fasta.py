@@ -3,7 +3,8 @@ def run_clc_sequence_info(file, cutoff):
     outfile = "{0}.{1}.SeqInfo".format(file, cutoff)
     if not os.path.isfile(outfile):
         pass
-        cmd = "/BiO/BioPeople/siyoo/00.Tools/clc-assembly-cell-4.4.2-linux_64/"\
+        #cmd = "~/YoosScripts/BioTools/CLC_AC_4.4.2_linux64/"\
+        cmd = "~/YoosScripts/BioTools/CLC_AC_4.4.2_mac64/"\
               "clc_sequence_info -r -n -c {2} {0} > {1}".format(file, outfile, cutoff)
         print (cmd)
         os.system(cmd)
