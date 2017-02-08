@@ -1,8 +1,8 @@
 
 
-def main():
-    out = open('genes.90.addDEG.pathogenic.int.xls', 'w')
-    for line in open('genes.90.addDEG.pathogenic.xls'):
+def main(args):
+    out = open(args.outxls, 'w')
+    for line in open(args.inxls):
         new_items = []
         items = line.rstrip('\n').split('\t')
         #print(items[:11])
@@ -16,4 +16,9 @@ def main():
     out.close()
 
 if __name__=='__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--inxls')
+    parser.add_argument('-o', '--outxls')
+    args = parser.parse_args()
+    main(args)

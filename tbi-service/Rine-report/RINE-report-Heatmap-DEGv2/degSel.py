@@ -78,7 +78,7 @@ if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-x', '--xls', help='xls file as Rine report format')
-    parser.add_argument('-fc', '--foldChange', type=float, default=1.0, help='log2foldChange value for select.')
+    parser.add_argument('-fc', '--foldChange', type=float, default=0.0001, help='log2foldChange value for select.')
     parser.add_argument('-p', '--p-value', type=float, default=1.0)
     parser.add_argument('-q', '--q-value', type=float, default=1.0)
     parser.add_argument('-o', '--out-xls', help='out xls file name')
