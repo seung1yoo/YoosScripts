@@ -8,13 +8,13 @@ def listDicMaker(idListFile):
     return idDic
 
 def main(args):
-    print args
+    print(args)
     idDic = listDicMaker(args.idList)
 
-    out = open(args.output)
+    out = open(args.output, 'w')
     for record in SeqIO.parse(open(args.input), args.inputType):
         if record.id in idDic:
-            SeqIO.write(out, record, args.inputType)
+            SeqIO.write(record, out, args.inputType)
     out.close()
 
 if __name__=='__main__':
