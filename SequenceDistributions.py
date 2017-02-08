@@ -10,9 +10,10 @@ def sizes_modifier(sizes, cutoff):
 def lengthDistribution(fasta):
     sizes = [len(record) for record in SeqIO.parse(fasta, 'fasta')]
     print (sum(sizes)/len(sizes))
+    max_size = sorted(sizes)[-1]
     sizes = sizes_modifier(sizes, 1000)
     pylab.hist(sizes, bins=50, color=['crimson'])
-    pylab.title('{0} sequences\nLength {1} to {2}'.format(len(sizes), min(sizes), max(sizes)))
+    pylab.title('{0} sequences\nLength {1} to {2}'.format(len(sizes), min(sizes), max_size))
     pylab.xlabel('Sequence length (bp)')
     pylab.ylabel('Count')
     pylab.show()
