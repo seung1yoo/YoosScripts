@@ -12,8 +12,9 @@ source_url("https://raw.githubusercontent.com/obigriffith/biostar-tutorials/mast
 
 #Load data
 setwd("~/Downloads/nubchi")
-fn = "genes.90.addDEG.pathogenic.int.fc2p005q001.txt"
+fn = "genes.90.addDEG.temperature.Only.Int.Heatmap.Rinput.csv"
 data <- read.table(fn, sep = "\t", header = TRUE, row.names = 1)
+data <- read.csv(fn, sep = ",", row.names = 1)
 data <- as.matrix(data)
 dim(data)
 head(data)
@@ -21,9 +22,8 @@ rownames(data)
 colnames(data)
 
 #column names change
-colnames(data)<-c("HighVirulence_Control_1d.vs.HighVirulence_Virus_1d","HighVirulence_Control_3d.vs.HighVirulence_Virus_3d",
-            "HighVirulence_Control_1w.vs.HighVirulence_Virus_1w","LowVirulence_Control_1d.vs.LowVirulence_Virus_1d",
-            "LowVirulence_Control_3d.vs.LowVirulence_Virus_3d","LowVirulence_Control_1w.vs.LowVirulence_Virus_1w")
+colnames(data)<-c("20C_virus_1day","20C_virus_3day","20C_virus_7day","20C_control_1day","20C_control_3day","20C_control_7day","13C_virus_1day",
+                  "13C_virus_3day","13C_virus_7day","13C_control_1day","13C_control_3day","13C_control_7day")
 
 #extracting specific columns from a data frame
 colnames(data)
@@ -54,7 +54,7 @@ treatColors=c("darkorchid","darkorchid","darkorchid","darkorchid1","darkorchid1"
 virulenceColors=c('gold2','gold2','gold2','gold2','gold2','gold2','gold4','gold4','gold4','gold4','gold4','gold4')
 clab=cbind(timeColors,treatColors,virulenceColors)
 clab
-colnames(clab)=c("TimeSeries","Treatment","Virulence")
+colnames(clab)=c("TimeSeries","Treatment","Temperature")
 colnames(clab)
 
 ### make heat-map roughly
@@ -76,8 +76,8 @@ for(i in 1:length(cluster.method.list)){
 
 ### make heatmap.3 clearly with categories (ColSideColors=clab, RowSideColors=rlab)
 main_title=""
-mydist=function(c) {dist(c,method="euclidean")}
-myclust=function(c) {hclust(c,method="ward.D")}
+mydist=function(c) {dist(c,method="minkowski")}
+myclust=function(c) {hclust(c,method="mcquitty")}
 myPalette <- colorRampPalette(rev(brewer.pal(5, "RdBu")))
 par(cex.main=1)
 heatmap.3(log2(data+0.1), hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(15,10),
@@ -88,7 +88,7 @@ heatmap.3(log2(data+0.1), hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale
 # legend : Specify legend position by keywords
 # http://www.sthda.com/english/wiki/add-legends-to-plots-in-r-software-the-easiest-way
 legend("topright", inset = .02,
-       legend=c("High","Low","","Control","virus","","1d","3d","7d"),
+       legend=c("20C","13C","","Control","virus","","1d","3d","7d"),
        fill=c("gold2","gold4","white","darkorchid1","darkorchid","white","lightpink1","lightpink2","lightpink3"), 
        border=FALSE, bty="n", angle = 90, y.intersp = 1, cex=0.7)
 
