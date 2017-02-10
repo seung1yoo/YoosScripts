@@ -12,8 +12,8 @@ source_url("https://raw.githubusercontent.com/obigriffith/biostar-tutorials/mast
 
 #Load data
 setwd("~/Downloads/nubchi")
-fn = "genes.90.addDEG.temperature.Only.Int.Heatmap.Rinput.csv"
-data <- read.table(fn, sep = "\t", header = TRUE, row.names = 1)
+fn = "genes.90.addDEG.size.Int.Only.Heatmap.EXP.AVG.xls"
+data <- read.table(fn, sep = "@", header = TRUE, row.names = 1)
 data <- read.csv(fn, sep = ",", row.names = 1)
 data <- as.matrix(data)
 dim(data)
@@ -54,7 +54,7 @@ treatColors=c("darkorchid","darkorchid","darkorchid","darkorchid1","darkorchid1"
 virulenceColors=c('gold2','gold2','gold2','gold2','gold2','gold2','gold4','gold4','gold4','gold4','gold4','gold4')
 clab=cbind(timeColors,treatColors,virulenceColors)
 clab
-colnames(clab)=c("TimeSeries","Treatment","Temperature")
+colnames(clab)=c("TimeSeries","Treatment","Size")
 colnames(clab)
 
 ### make heat-map roughly
