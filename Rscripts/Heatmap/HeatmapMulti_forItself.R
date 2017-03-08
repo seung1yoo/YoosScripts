@@ -76,8 +76,8 @@ for(i in 1:length(cluster.method.list)){
 
 ### make heatmap.3 clearly with categories (ColSideColors=clab, RowSideColors=rlab)
 main_title=""
-mydist=function(c) {dist(c,method="minkowski")}
-myclust=function(c) {hclust(c,method="mcquitty")}
+mydist=function(c) {dist(c,method="manhattan")}
+myclust=function(c) {hclust(c,method="average")}
 myPalette <- colorRampPalette(rev(brewer.pal(5, "RdBu")))
 par(cex.main=1)
 heatmap.3(log2(data+0.1), hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale="row", dendrogram="both", margins=c(15,10),
@@ -88,7 +88,7 @@ heatmap.3(log2(data+0.1), hclustfun=myclust, distfun=mydist, na.rm = TRUE, scale
 # legend : Specify legend position by keywords
 # http://www.sthda.com/english/wiki/add-legends-to-plots-in-r-software-the-easiest-way
 legend("topright", inset = .02,
-       legend=c("20C","13C","","Control","virus","","1d","3d","7d"),
+       legend=c("juvenile","adult","","Control","virus","","1d","3d","7d"),
        fill=c("gold2","gold4","white","darkorchid1","darkorchid","white","lightpink1","lightpink2","lightpink3"), 
        border=FALSE, bty="n", angle = 90, y.intersp = 1, cex=0.7)
 
