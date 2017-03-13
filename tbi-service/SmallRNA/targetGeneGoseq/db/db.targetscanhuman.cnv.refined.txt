@@ -1,0 +1,1 @@
+smrna@titan:~/analysis_pack/targetgo/database/backup/db.targetscanhuman.cnv.refined.txt
