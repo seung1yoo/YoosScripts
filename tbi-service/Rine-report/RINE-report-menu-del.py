@@ -34,7 +34,7 @@ def modify_html(html_file, menus):
 
 
 def main(args):
-    print args
+    print(args)
     html_files = []
     html_files = grep_html_files(args.path, html_files)
     for html_file in html_files:
@@ -46,6 +46,6 @@ if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--path', help='RINE report path')
-    parser.add_argument('-m', '--menus', nargs='+', choices=('Home','Overview','Samples','Expression','DEG','GO','Genes','Help'), help='MENU name to delete')
+    parser.add_argument('-m', '--menus', nargs='+', choices=('Home','Overview','Samples','Expression','DEG','DEG(Symbol)','GO','Genes','Help'), help='MENU name to delete')
     args = parser.parse_args()
     main(args)
