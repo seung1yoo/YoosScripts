@@ -228,10 +228,10 @@ def main(args):
     exp_file = expMaker(args.species, expDic, samples)
 
     #### exp, deg information add to gmt
-    goInfo_dir = 'goInfo'
-    if os.path.isdir(goInfo_dir): pass
-    else: os.system('mkdir {0}'.format(goInfo_dir))
-    split_go(gmt_file, expDic, expOutDic, goInfo_dir, samples, log2fc_cols, v_cols)
+    #goInfo_dir = 'goInfo'
+    #if os.path.isdir(goInfo_dir): pass
+    #else: os.system('mkdir {0}'.format(goInfo_dir))
+    #split_go(gmt_file, expDic, expOutDic, goInfo_dir, samples, log2fc_cols, v_cols)
 
 if __name__=='__main__':
     import os
