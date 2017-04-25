@@ -1,0 +1,24 @@
+
+# KEGG Automatic Annotation Server 
+# http://www.genome.jp/tools/kaas/
+
+# if you job is done, will receive a mail
+
+## EXAMPLE
+#KEGG Automatic Annotation Server Ver. 2.1
+#Your request ID is 1492497685
+#
+#Result of Annotation
+#http://www.genome.jp/kaas-bin/kaas_main?mode=user&id=1492497685&key=klul27PW
+#
+#
+#The result data will remove in seven days.
+##
+
+# 1. click "html" in result column.
+# 2. click "BRITE hierarchies"
+# 3. click "KEGG Orthology (KO)"
+# 4. download "Download htext"
+
+# THEN, use kaas_result_parser.py
+# python ~/YoosScripts/GSEA/KEGG-KAAS/kaas_result_parser.py -kq q00001.keg -gi genes.xls -go genes.kegg.xls -dt KEGG_DB.table
