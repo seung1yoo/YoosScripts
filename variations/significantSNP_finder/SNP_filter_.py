@@ -282,7 +282,8 @@ if __name__=='__main__':
     parser.add_argument('-vtp', '--vcftools', help='vcftools path',
             default='/BiO/BioTools/vcftools/current/bin/vcftools')
     parser.add_argument('-pp', '--plink', help='plink v1.9 path',
-            default='/BiO/BioTools/plink/v1.09/plink')
+            #default='/BiO/BioTools/plink/v1.09/plink')
+            default='/BiO/BioTools/plink/1.07/plink')
     parser.add_argument('-o', '--outprefix', help='output file name prefix',
             default='SNP_filter_result')
     args = parser.parse_args()
