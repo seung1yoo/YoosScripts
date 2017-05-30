@@ -214,7 +214,7 @@ if __name__=='__main__':
     parser.add_argument('-x', '--xls', help='genes.xls',
             default='/BiO/skydj82/Projects/TBD160976-DKU-Alligator-RNAdenovo-20170207/Report/EXP_DEG/Genes.xls')
     parser.add_argument('-o', '--outdir', help='outdir name',
-	        default='/BiO/skydj82/Projects/TBD160976-DKU-Alligator-RNAdenovo-20170207/OutPut/GSEA')
+            default='/BiO/skydj82/Projects/TBD160976-DKU-Alligator-RNAdenovo-20170207/OutPut/GSEA')
     parser.add_argument('-s', '--species', help='species name or prefix name',
             default='test_species')
     parser.add_argument('-f', '--log2fc', help='exp table filter',
