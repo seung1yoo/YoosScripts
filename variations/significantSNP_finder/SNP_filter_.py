@@ -19,7 +19,7 @@ def select_biallele(invcf, prefix):
             #if not len(alt) in [1] or not len(ref) in [1]:
             #    continue
             out.write(line)
-        out.close() 
+        out.close()
     return outvcf, prefix
 
 def select_snp(invcf, vcftools, prefix):
@@ -186,8 +186,8 @@ def test_association(hwe_fileset, plink):
 def select_hetero(invcf, prefix):
     prefix = '{0}.hete'.format(prefix)
     outvcf = '{0}.vcf'.format(prefix)
-    min_rate = 40.0
-    max_rate = 60.0
+    min_rate = 30.0
+    max_rate = 50.0
     homo_min_rate = 90.0
     if os.path.isfile(outvcf):
         print '{0} OK'.format(outvcf)
@@ -229,7 +229,8 @@ def select_hetero(invcf, prefix):
                     depths = sampleTags[idxDic['AD']].split(',')
                     ref_depth = depths[int(ref_gt)]
                     alt_depth = depths[int(alt_gt)]
-                    depth_rate = int(ref_depth) / float(alt_depth) * 100.0
+                    #depth_rate = int(ref_depth) / float(alt_depth) * 100.0
+                    depth_rate = int(alt_depth) / float(int(ref_depth)+int(alt_depth)) * 100.0
                     #
                     if min_rate <= depth_rate <= max_rate:
                         new_samples.append(sample)
