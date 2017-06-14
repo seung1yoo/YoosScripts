@@ -55,6 +55,6 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-ib', '--inblast', help='11 format of blast in RINE process')
     parser.add_argument('-if', '--infasta', help='fasta of blastx')
-    parser.add_argument('-t', '--tempFile')
+    parser.add_argument('-t', '--tempFile', default='blast_checker.temp')
     args = parser.parse_args()
     main(args)
