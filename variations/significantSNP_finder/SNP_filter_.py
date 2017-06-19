@@ -131,7 +131,7 @@ def filter_geno(binary_fileset, plink):
         print '{0} OK'.format(bimFile)
         print '{0} OK'.format(famFile)
     else:
-        cmd = '{0} --bfile {1} --geno 0.2 --make-bed --allow-extra-chr --out {2}'.format(plink, binary_fileset, geno_fileset)
+        cmd = '{0} --bfile {1} --geno 0.1 --make-bed --allow-extra-chr --out {2}'.format(plink, binary_fileset, geno_fileset)
         print cmd
         os.system(cmd)
 
@@ -187,7 +187,7 @@ def select_hetero(invcf, prefix):
     prefix = '{0}.hete'.format(prefix)
     outvcf = '{0}.vcf'.format(prefix)
     min_rate = 30.0
-    max_rate = 50.0
+    max_rate = 70.0
     homo_min_rate = 90.0
     if os.path.isfile(outvcf):
         print '{0} OK'.format(outvcf)
@@ -283,7 +283,8 @@ if __name__=='__main__':
             default='/BiO/BioTools/vcftools/current/bin/vcftools')
     parser.add_argument('-pp', '--plink', help='plink v1.9 path',
             #default='/BiO/BioTools/plink/v1.09/plink')
-            default='/BiO/BioTools/plink/1.07/plink')
+            #default='/BiO/BioTools/plink/1.07/plink')
+            default='/TBI/People/tbi/siyoo/BioTools/plink/plink')
     parser.add_argument('-o', '--outprefix', help='output file name prefix',
             default='SNP_filter_result')
     args = parser.parse_args()
