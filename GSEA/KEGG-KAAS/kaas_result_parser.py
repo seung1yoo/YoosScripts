@@ -17,7 +17,7 @@ def kaas_q1_parser(infile):
         elif line.startswith('D'):
             items = line[1:].rstrip('\n').split(';')
             items = [x.strip() for x in items]
-            myGene = items[0]
+            myGene = items[0].split('|')[0]
             keggOrthology_id = items[1].split()[0] # K(kegg Orthology) id
             keggEnzyme_alias = ' '.join(items[1].split()[1:]) # EC alias
             keggEnzyme_desc = items[2] # EC desc
@@ -29,6 +29,11 @@ def kaas_q1_parser(infile):
             #
             keggTableDic.setdefault(hierarchy_a, {}).setdefault(hierarchy_b, {}).setdefault(keggBrite_id, keggBrite_desc)
         #
+    #
+    for myGene, infoDic in keggAnnoDic.items():
+        for info, value in infoDic.items():
+            print(myGene, info, value)
+    #
     return keggAnnoDic, keggTableDic
 
 def keggUpdate(keggAnnoDic, genes_in, genes_out, title_key, myGene_key, delimiter):
