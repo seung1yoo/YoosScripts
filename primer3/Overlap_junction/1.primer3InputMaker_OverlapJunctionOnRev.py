@@ -41,6 +41,10 @@ def makePRIMER3_input(seqDic, basketDic, amplicon_size, outfile):
     outInfo = open('{0}.info'.format(outfile), 'w')
     for key, unitDic in basketDic.iteritems():
         length = int(unitDic['end']) - int(unitDic['start'])
+        seq_id = '-'.join([unitDic['trID'], unitDic['start'],
+                           unitDic['end'], '-'.join(unitDic['infos'])])
+        seq_temp = seqDic[unitDic['trID']][\
+                int(unitDic['start'])-1000:int(unitDic['end'])+1000],
         info = '''\
 SEQUENCE_ID={0}
 SEQUENCE_TEMPLATE={1}
@@ -72,8 +76,7 @@ PRIMER_EXPLAIN_FLAG=1
 PRIMER_THERMODYNAMIC_PARAMETERS_PATH=/TBI/People/tbi/siyoo/BioProject/WGRS-TBD160363-20160726/snpeff/0.UniqeGenotypePerOneSampleOnExon/0.primer3/0.Tool/primer3-2.3.7/src/primer3_config/
 =
 '''.format(
-        '-'.join([unitDic['trID'], unitDic['start'], unitDic['end'], '-'.join(unitDic['infos'])]),
-        seqDic[unitDic['trID']][int(unitDic['start'])-1000:int(unitDic['end'])+1000],
+        seq_id, seq_temp,
         amplicon_size,
         str(999),
         length,
