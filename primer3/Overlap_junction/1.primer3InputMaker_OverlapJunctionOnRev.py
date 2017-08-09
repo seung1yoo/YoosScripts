@@ -43,8 +43,7 @@ def makePRIMER3_input(seqDic, basketDic, amplicon_size, outfile):
         length = int(unitDic['end']) - int(unitDic['start'])
         seq_id = '-'.join([unitDic['trID'], unitDic['start'],
                            unitDic['end'], '-'.join(unitDic['infos'])])
-        seq_temp = seqDic[unitDic['trID']][\
-                int(unitDic['start'])-1000:int(unitDic['end'])+1000],
+        seq_temp = seqDic[unitDic['trID']][int(unitDic['start'])-1000:int(unitDic['end'])+1000]
         info = '''\
 SEQUENCE_ID={0}
 SEQUENCE_TEMPLATE={1}
