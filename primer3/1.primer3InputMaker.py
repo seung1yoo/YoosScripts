@@ -36,11 +36,11 @@ def makeBasket(infile):
     print 'make basket total : {0}'.format(n)
     return basketDic
 
-def makePRIMER3_input(seqDic, basketDic, amplicon_size, outfile):
+def makePRIMER3_input(seqDic, basketDic, amplicon_size, outfile, config):
     out = open('{0}.{1}'.format(outfile,amplicon_size), 'w')
     outInfo = open('{0}.info'.format(outfile), 'w')
     for key, unitDic in basketDic.iteritems():
-        length = int(unitDic['end']) - int(unitDic['start'])
+        length = int(unitDic['end']) - int(unitDic['start']) + 1
         info = '''\
 SEQUENCE_ID={0}
 SEQUENCE_TEMPLATE={1}
@@ -62,14 +62,15 @@ P3_FILE_FLAG=1
 PRIMER_NUM_RETURN=7
 PRIMER_PICK_INTERNAL_OLIGO=0
 PRIMER_EXPLAIN_FLAG=1
-PRIMER_THERMODYNAMIC_PARAMETERS_PATH=/TBI/People/tbi/siyoo/BioProject/WGRS-TBD160363-20160726/snpeff/0.UniqeGenotypePerOneSampleOnExon/0.primer3/0.Tool/primer3-2.3.7/src/primer3_config/
+PRIMER_THERMODYNAMIC_PARAMETERS_PATH={5}
 =
 '''.format(
         '-'.join([unitDic['trID'], unitDic['start'], unitDic['end'], '-'.join(unitDic['infos'])]),
         seqDic[unitDic['trID']][int(unitDic['start'])-500:int(unitDic['end'])+500],
         str(499),
         length,
-        amplicon_size)
+        amplicon_size,
+        config)
         out.write(info)
         outInfo.write('{0}\t{1}\t{2}\n'.format(
             '-'.join([unitDic['trID'], unitDic['start'], unitDic['end'], '-'.join(unitDic['infos'])]),
@@ -86,7 +87,7 @@ def executePrimer3(infile, outfile, amplicon_size):
 def main(args):
     basketDic = makeBasket(args.table)
     seqDic = seqDicMaker(args.reference, basketDic, args.outfile)
-    makePRIMER3_input(seqDic, basketDic, args.amplicon_size, args.infile)
+    makePRIMER3_input(seqDic, basketDic, args.amplicon_size, args.infile, args.config)
     executePrimer3(args.infile, args.outfile, args.amplicon_size)
 
 if __name__=='__main__':
@@ -105,6 +106,7 @@ if __name__=='__main__':
             default='primer3.input')
     parser.add_argument('-o', '--outfile',
             default='primer3.output')
+    parser.add_argument('-c', '--config')
     args = parser.parse_args()
     main(args)
 

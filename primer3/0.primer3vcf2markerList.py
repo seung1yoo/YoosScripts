@@ -11,6 +11,7 @@ def main(args):
         #
         chrom = items[0]
         pos = int(items[1])
+        qual = items[5]
         ref_n = len(items[3])
         alt_n = len(items[4])
         ref = items[3]
@@ -18,7 +19,20 @@ def main(args):
         start = pos
         end = pos + ref_n - 1
         #
-        new_items = [chrom, str(start), str(end), '-', '-', ref, alt]
+        depth = '0'
+        for info in items[7].split(';'): # INFO
+            if info.startswith('DP'):
+                units = info.split('=')
+                key = units[0]
+                value = units[1]
+                if key in ['DP']:
+                    depth = value
+                else:
+                    pass
+            else:
+                pass
+        #
+        new_items = [chrom, str(start), str(end), qual, depth, ref, alt]
         out.write('{0}\n'.format('\t'.join(new_items)))
     out.close()
 

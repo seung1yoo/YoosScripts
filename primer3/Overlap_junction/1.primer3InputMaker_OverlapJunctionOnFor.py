@@ -36,40 +36,25 @@ def makeBasket(infile):
     print 'make basket total : {0}'.format(n)
     return basketDic
 
-def makePRIMER3_input(seqDic, basketDic, amplicon_size, outfile):
+def makePRIMER3_input(seqDic, basketDic, amplicon_size, outfile, config_path):
     out = open('{0}.{1}'.format(outfile,amplicon_size), 'w')
     outInfo = open('{0}.info'.format(outfile), 'w')
     for key, unitDic in basketDic.iteritems():
-        length = int(unitDic['end']) - int(unitDic['start'])
+        length = int(unitDic['end']) - int(unitDic['start']) + 1
         seq_id = '-'.join([unitDic['trID'], unitDic['start'],
                            unitDic['end'], '-'.join(unitDic['infos'])])
-        seq_temp = seqDic[unitDic['trID']][\
-                int(unitDic['start'])-1000:int(unitDic['end'])+1000],
+        seq_temp = seqDic[unitDic['trID']][int(unitDic['start'])-1000:int(unitDic['end'])+1000]
         info = '''\
 SEQUENCE_ID={0}
 SEQUENCE_TEMPLATE={1}
-SEQUENCE_TARGET={7},{3}
-SEQUENCE_OVERLAP_JUNCTION_LIST={2}
+SEQUENCE_TARGET={3},{2}
+SEQUENCE_OVERLAP_JUNCTION_LIST={4}
 PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=1
 PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=2
 PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=3
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=4
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=5
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=6
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=7
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=8
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=9
-PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION=10
 PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=1
 PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=2
 PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=3
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=4
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=5
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=6
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=7
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=8
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=9
-PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION=10
 PRIMER_TASK=generic
 PRIMER_PICK_LEFT_PRIMER=1
 PRIMER_PICK_INTERNAL_OLIGO=0
@@ -83,20 +68,19 @@ PRIMER_MAX_TM=65.0
 PRIMER_OPT_GC_PERCENT=50.0
 PRIMER_MIN_GC=40.0
 PRIMER_MAX_GC=60.0
-PRIMER_PRODUCT_SIZE_RANGE={4}
+PRIMER_PRODUCT_SIZE_RANGE={5}
 P3_FILE_FLAG=1
 PRIMER_NUM_RETURN=7
 PRIMER_EXPLAIN_FLAG=1
-PRIMER_THERMODYNAMIC_PARAMETERS_PATH=/TBI/People/tbi/siyoo/BioProject/WGRS-TBD160363-20160726/snpeff/0.UniqeGenotypePerOneSampleOnExon/0.primer3/0.Tool/primer3-2.3.7/src/primer3_config/
+PRIMER_THERMODYNAMIC_PARAMETERS_PATH={6}
 =
 '''.format(
         seq_id, seq_temp,
-        str(999),
-        length,
-        amplicon_size,
-        str(999-20),
-        str(int(length)+20+999),
-        str(999+50))
+        length, #SEQUENCE_TARGET
+        str(999+50), #SEQUENCE_TARGET
+        str(999), #SEQUENCE_OVERLAP_JUNCTION_LIST
+        amplicon_size, #PRIMER_PRODUCT_SIZE_RANGE
+        config_path)
         #
         out.write(info)
         outInfo.write('{0}\t{1}\t{2}\n'.format(
@@ -114,7 +98,7 @@ def executePrimer3(infile, outfile, amplicon_size):
 def main(args):
     basketDic = makeBasket(args.table)
     seqDic = seqDicMaker(args.reference, basketDic, args.outfile)
-    makePRIMER3_input(seqDic, basketDic, args.amplicon_size, args.infile)
+    makePRIMER3_input(seqDic, basketDic, args.amplicon_size, args.infile, args.config_path)
     executePrimer3(args.infile, args.outfile, args.amplicon_size)
 
 if __name__=='__main__':
@@ -133,6 +117,7 @@ if __name__=='__main__':
             default='primer3.input')
     parser.add_argument('-o', '--outfile',
             default='primer3.output')
+    parser.add_argument('-c', '--config-path')
     args = parser.parse_args()
     main(args)
 
