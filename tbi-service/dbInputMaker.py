@@ -6,7 +6,8 @@ def sample_in_parser(samplein):
         if line.startswith('INPUT'):
             samNum = items[1]
             samNum = "S{0:0>4}".format(samNum)
-            samName = items[4].split('/')[-1].split('--')[0]
+            samName = '_'.join(items[4].split('/')[-1].split('_')[:-1])
+            print samName
             samDic.setdefault(samName, samNum)
     return samDic
 
@@ -15,7 +16,7 @@ def main(args):
     #
     aDic = dict()
     for alog in args.inputs:
-        samName = alog.split('/')[-1].split('--')[0]
+        samName = alog.split('/')[-1].split('.log')[0]
         for line in open(alog):
             items = line.rstrip('\n').split('\t')
             if line.startswith('N_RAW_READ'):
