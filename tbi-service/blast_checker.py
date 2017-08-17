@@ -8,7 +8,7 @@ class BLAST_CHECKER():
         self.process_rate = self.process_checker()
 
     def last_title_finder(self):
-        cmd = 'tail -n500000 {0} | grep title | tail -n1 > {1}'.format(self.inblast, self.tempFile)
+        cmd = 'tail -n900000 {0} | grep title | tail -n1 > {1}'.format(self.inblast, self.tempFile)
         #print cmd
         os.system(cmd)
         #
