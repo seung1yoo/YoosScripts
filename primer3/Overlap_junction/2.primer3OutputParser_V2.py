@@ -37,7 +37,7 @@ class primer3Parser:
         fw2 = open(out_1_fasta, 'w')
         fw3 = open(out_2_fasta, 'w')
         for lines in self.iterResult(input_file):
-            print lines
+            #print lines
             seq_id = ''
             product_size = ''
             f_start = 0
