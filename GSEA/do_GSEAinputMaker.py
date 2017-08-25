@@ -86,7 +86,8 @@ def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, de
             desc_idx = items.index(desc_key)
             exp_idxs = [i for i, item in enumerate(items) if re.search('^EXP', item)]
             samples = [items[x].split(':')[1] for x in exp_idxs]
-            log2fc_idxs = [i for i, item in enumerate(items) if re.search('Log2FC$', item.strip("\""))]
+            #log2fc_idxs = [i for i, item in enumerate(items) if re.search('Log2FC$', item.strip("\""))]
+            log2fc_idxs = [i for i, item in enumerate(items) if re.search('log2fc$', item.strip("\"").lower())]
             log2fc_cols = [items[x] for x in log2fc_idxs]
             if statistics in ['p']:
                 v_idxs = [i for i, item in enumerate(items) if re.search('PV$', item.strip("\""))]

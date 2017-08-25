@@ -32,7 +32,8 @@ def kaas_q1_parser(infile):
     #
     for myGene, infoDic in keggAnnoDic.items():
         for info, value in infoDic.items():
-            print(myGene, info, value)
+            #print(myGene, info, value)
+            pass
     #
     return keggAnnoDic, keggTableDic
 
@@ -48,7 +49,7 @@ def keggUpdate(keggAnnoDic, genes_in, genes_out, title_key, myGene_key, delimite
         #
         myGene = items[myGene_idx]
         if not myGene in keggAnnoDic:
-            items.extend(['-','-','-'])
+            items.extend(['-','-','-','-'])
             out.write('{0}\n'.format('\t'.join(items)))
         else:
             keggBrite_ids = []
@@ -84,8 +85,8 @@ def main(args):
     print(args)
     #
     keggAnnoDic, keggTableDic = kaas_q1_parser(args.kaas_q1)
-    keggUpdate(keggAnnoDic, args.genes_in, args.genes_out, 'Order', 'GeneId', ',')
     keggTableMaker(keggTableDic, args.db_table_out)
+    keggUpdate(keggAnnoDic, args.genes_in, args.genes_out, 'Order', 'GeneId', ',')
 
 if __name__=='__main__':
     import argparse
