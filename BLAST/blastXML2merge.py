@@ -16,7 +16,8 @@ def merge(split_files, output_file):
             out.close()
             h.close()
             raise ValueError("BLAST XML file %s was empty" % f)
-        if header.strip() != '<?xml version="1.0"?>':
+        #if header.strip() != '<?xml version="1.0"?>': #1 origin
+        if not header.startswith('<?xml version="1.0"'): #1 modifid by siyoo @20170904
             out.write(header) #for diagnosis
             out.close()
             h.close()
