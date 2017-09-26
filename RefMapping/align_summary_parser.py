@@ -60,7 +60,8 @@ def main(args):
     out.write('{0}\n'.format('\t'.join(titles)))
     '''
     out = open(args.outFile , 'w')
-    tags = ['Left', 'Right', 'Unpaired']
+    #tags = ['Left', 'Right', 'Unpaired']
+    tags = ['Left', 'Right']
     types = ['Input', 'Mapped', 'Mapped_Rate', 'HitOver2', 'HitOver2_Rate', 'HitOver20', 'HitOver20_Rate']
     titles_1 = ['']
     for tag in tags:
