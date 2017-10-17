@@ -211,19 +211,19 @@ if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--go-table', help='My go database',
-            default='/BiO/sgpark/Iso-Seq_Clustering_And_Annotation_Pipeline/DBs/GO/gene_ontology_edit.obo.2016-06-01.table')
+            default='~/YoosScripts/Databases/Ontology_Archives/gene_ontology_edit.obo.2016-06-01.table')
     parser.add_argument('-x', '--xls', help='genes.xls',
-            default='/BiO/skydj82/Projects/TBD160976-DKU-Alligator-RNAdenovo-20170207/Report/EXP_DEG/Genes.xls')
+            default='gene.xls')
     parser.add_argument('-o', '--outdir', help='outdir name',
-            default='/BiO/skydj82/Projects/TBD160976-DKU-Alligator-RNAdenovo-20170207/OutPut/GSEA')
+            default='GSEA')
     parser.add_argument('-s', '--species', help='species name or prefix name',
             default='test_species')
     parser.add_argument('-f', '--log2fc', help='exp table filter',
-            default=1)
+            default=0)
     parser.add_argument('-m', '--statistics', choices=('p','q'),
             default='p')
     parser.add_argument('-v', '--value', help='filter value p-value or q-value',
-            default=0.05)
+            default=1)
     parser.add_argument('-gd', '--go-delimiter',
             default=',')
     parser.add_argument('-gs', '--gsea-sample',
