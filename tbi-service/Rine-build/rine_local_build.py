@@ -11,7 +11,8 @@ import getopt
 
 import pdb
 
-from rine_liblocal import *
+#from rine_liblocal import *
+from rine_liblocal_titan import *
 
 #REFERENCE_HOME="/BiOfs/BioResources/References"
 #REFERENCE_HOME="/BiO/References"
