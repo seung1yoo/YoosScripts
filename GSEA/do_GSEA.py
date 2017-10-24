@@ -8,7 +8,7 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric):
     if not os.path.isdir(outdir):
         os.system('mkdir -p {0}'.format(outdir))
     #
-    command = '''java -Xmx1024m -cp {0} xtools.gsea.Gsea \
+    command = '''java -Xmx2G -cp {0} xtools.gsea.Gsea \
 -res {1} \
 -cls {2}#{3} \
 -gmx {4} \
