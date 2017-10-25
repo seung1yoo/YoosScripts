@@ -10,24 +10,26 @@ for File in Files :
 
     for line in fr.xreadlines() :
         words       = line.rstrip('\n').split('\t')
-        geneId      = words[1]
-        geneAcc     = words[2]
-        geneName    = words[3]
-        geneDesc    = words[10]
-        exp_1       = words[12]
-        exp_2       = words[13]
-        exp_3       = words[14]
-        deg_1_pv = words[16]
-        deg_1_fc = words[18]
-        deg_2_pv = words[24]
-        deg_2_fc = words[26]
-        go = words[-1]
+        #
+        infos       = words[1:11] # GeneId ~ Desc
+        #
+        exps_1      = words[18:21] # Timeseries 1 
+        exps_2      = words[15:18] # Timeseries 2
+        exps_3      = words[12:15] # Timeseries 3
+        #exps_4      = words[]
+        #
+        degs_1 = words[28:31] # DEG 1
+        degs_2 = words[44:47] # DEG 2
+        #
+        gos = [words[-1]]
 
-        sub_lst = [geneId, geneAcc, geneName, geneDesc,
-                   exp_1, exp_2, exp_3,
-                   deg_1_pv, deg_1_fc,
-                   deg_2_pv, deg_2_fc,
-                   go]
+        sub_lst = infos
+        sub_lst.extend(exps_1)
+        sub_lst.extend(exps_2)
+        sub_lst.extend(exps_3)
+        sub_lst.extend(degs_1)
+        sub_lst.extend(degs_2)
+        sub_lst.extend(gos)
 
         lst.append(sub_lst)
 
