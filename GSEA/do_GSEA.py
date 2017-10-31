@@ -33,13 +33,13 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric):
 -rnd_seed timestamp \
 -save_rnd_lists false \
 -set_max 500 \
--set_min 15 \
--zip_report true \
+-set_min 10 \
+-zip_report false \
 -gui false'''.format(jar, exp, cls, pair, gmt, chip, outdir, rpt_label, metric)
     return command
 
 def execute(command):
-    #print command
+    print command
     os.system(command)
 
 def main(args):
