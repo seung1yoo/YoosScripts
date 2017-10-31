@@ -1,15 +1,15 @@
 import sys
 
-if len(sys.argv) != 4 :
-    print "Usage : %s <genes.xls> <colname> <prefix>" % sys.argv[0]
+if len(sys.argv) != 6 :
+    print "Usage : %s <genes.xls> <colname> <prefix> <log2FC_cut> <p_cut>" % sys.argv[0]
     sys.exit()
 
-PREFIX = str(sys.argv[3])
-
 f2 = open(sys.argv[2], 'r')
+PREFIX = str(sys.argv[3])
+FCFILT   = float(sys.argv[4]) # log
+p_cut = float(sys.argv[5]) # p-value
 
 COLNAMES = []
-
 for line in f2.xreadlines() :
     if line.rstrip() == '' or line[0] == '#' :
         continue
@@ -21,8 +21,6 @@ f1 = open(sys.argv[1], 'r')
 COLNUM   = {}
 TIMELIST = {}
 header   = ''
-FCFILT   = 2.0
-p_cut = 0.5
 
 for line in f1.xreadlines() :
     if line.startswith('Order') :
@@ -43,20 +41,20 @@ for line in f1.xreadlines() :
                 p_value = 1.0
             else:
                 p_value = float(p_value)
-            #
+
             if p_value > p_cut:
                 CNT += 1
             #
-            log2fc_value = '-'
+            log2fc_value = 0.0
             if words[COLNUM[NAME]+3] in ['-']: # Log2FC value
                 log2fc_value = 0.0
             else:
                 log2fc_value = float(words[COLNUM[NAME]+3])
-            #
-            #if float(log2fc_value) < 0.0 and float(log2fc_value) > 0.0 :
+
             if float(log2fc_value) in [0.0]:
                 CNT += 1
             #
+            #####################
             '''
             if words[COLNUM[NAME]] == 'Y' :
                 if float(log2fc_value) <= float(-(FCFILT)) :
@@ -66,7 +64,6 @@ for line in f1.xreadlines() :
             else :
                 pattern += 'F'
             '''
-            #
             if -(FCFILT) < float(log2fc_value) < FCFILT:
                 pattern += 'F'
             elif float(log2fc_value) <= -(FCFILT) :
@@ -74,17 +71,19 @@ for line in f1.xreadlines() :
             elif float(log2fc_value) >= FCFILT :
                 pattern += 'U'
             else:
-                pass
-            #
+                print 'error: check the fold change'
+                import sys
+                sys.exit()
+            #'''
+            #####################
 
         if not CNT == 0 :
+            #pass
             continue
 
         if not TIMELIST.has_key(pattern) :
             TIMELIST[pattern] = []
-
         TIMELIST[pattern].append("%s" % "\t".join(words))
-
 
 for PAT in TIMELIST.keys() :
     w = open("pre_%s_%s.xls" % (PREFIX, PAT), 'w')

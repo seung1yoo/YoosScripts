@@ -18,8 +18,8 @@ for File in Files :
         exps_3      = words[12:15] # Timeseries 3
         #exps_4      = words[]
         #
-        degs_1 = words[28:31] # DEG 1
-        degs_2 = words[44:47] # DEG 2
+        degs_1 = words[21:25] # DEG 1
+        degs_2 = words[29:33] # DEG 2
         #
         gos = [words[-1]]
 

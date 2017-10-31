@@ -10,7 +10,7 @@
 ### log2fc cut 2 ==>  3 ==> 
 ## 2. p_cut
 ###
-* python mkTimeseriesResult.py genes.xls colname.txt Timeseries
+* python mkTimeseriesResult.py genes.xls colname.txt Timeseries 1 0.01
 
 # have to change column index
 * python finalTun_timeResult.py
