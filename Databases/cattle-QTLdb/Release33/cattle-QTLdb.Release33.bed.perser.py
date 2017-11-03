@@ -47,18 +47,18 @@ def qtl_parser(originBED, listFile, trait, sub_trait):
 def main():
     originBED = 'cattle-QTLdb.Release33.bed'
     # #
-    qtl_parser(originBED, 'Reproduction_Traits.All.QTLterms', 'Reproduction', 'All')
-    qtl_parser(originBED, 'Reproduction_Traits.Fertility.QTLterms', 'Reproduction', 'Fertility')
-    qtl_parser(originBED, 'Reproduction_Traits.General.QTLterms', 'Reproduction', 'General')
-    qtl_parser(originBED, 'Reproduction_Traits.Reproductive-hormone-level.QTLterms', 'Reproduction', 'Reproductive-hormone-level')
-    qtl_parser(originBED, 'Reproduction_Traits.Semen-quality.QTLterms', 'Reproduction', 'Semen-quality')
+    #qtl_parser(originBED, 'Reproduction_Traits.All.QTLterms', 'Reproduction', 'All')
+    #qtl_parser(originBED, 'Reproduction_Traits.Fertility.QTLterms', 'Reproduction', 'Fertility')
+    #qtl_parser(originBED, 'Reproduction_Traits.General.QTLterms', 'Reproduction', 'General')
+    #qtl_parser(originBED, 'Reproduction_Traits.Reproductive-hormone-level.QTLterms', 'Reproduction', 'Reproductive-hormone-level')
+    #qtl_parser(originBED, 'Reproduction_Traits.Semen-quality.QTLterms', 'Reproduction', 'Semen-quality')
     # #
     qtl_parser(originBED, 'Milk_Traits.All.QTLterms', 'Milk', 'All')
-    qtl_parser(originBED, 'Milk_Traits.Milk_composition_fat.QTLterms', 'Milk', 'Milk_composition_fat')
-    qtl_parser(originBED, 'Milk_Traits.Milk_composition_other.QTLterms', 'Milk', 'Milk_composition_other')
-    qtl_parser(originBED, 'Milk_Traits.Milk_composition_protein.QTLterms', 'Milk', 'Milk_composition_protein')
-    qtl_parser(originBED, 'Milk_Traits.Milk_processing_trait.QTLterms', 'Milk', 'Milk_processing_trait')
-    qtl_parser(originBED, 'Milk_Traits.Milk_yield.QTLterms', 'Milk', 'Milk_yield')
+    #qtl_parser(originBED, 'Milk_Traits.Milk_composition_fat.QTLterms', 'Milk', 'Milk_composition_fat')
+    #qtl_parser(originBED, 'Milk_Traits.Milk_composition_other.QTLterms', 'Milk', 'Milk_composition_other')
+    #qtl_parser(originBED, 'Milk_Traits.Milk_composition_protein.QTLterms', 'Milk', 'Milk_composition_protein')
+    #qtl_parser(originBED, 'Milk_Traits.Milk_processing_trait.QTLterms', 'Milk', 'Milk_processing_trait')
+    #qtl_parser(originBED, 'Milk_Traits.Milk_yield.QTLterms', 'Milk', 'Milk_yield')
     # #
 
 if __name__=='__main__':
