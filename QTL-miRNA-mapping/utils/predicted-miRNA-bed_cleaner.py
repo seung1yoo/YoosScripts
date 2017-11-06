@@ -1,11 +1,12 @@
 import os
 import glob
 
-def main():
-    beds = glob.glob('./*/*.bed')
-    for bed in beds:
+def main(args):
+    #beds = glob.glob('./*/*.bed')
+    for idx, bed in enumerate(args.beds):
         print bed
-        sample = bed.split('/')[-2]
+        #sample = bed.split('/')[-2]
+        sample = args.samples[idx]
         print sample
         out = open('{0}.mirdeep.result.temp.bed'.format(sample), 'w')
         for line in open(bed):
@@ -21,4 +22,9 @@ def main():
 
 
 if __name__=='__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-bs', '--beds', nargs='+', help='miRDeep2 results (bed format)')
+    parser.add_argument('-ss', '--samples', nargs='+', help='sample names')
+    args = parser.parse_args()
+    main(args)

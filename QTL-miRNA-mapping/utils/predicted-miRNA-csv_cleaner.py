@@ -40,10 +40,11 @@ def file_preprocessing(sample, csv):
     return '{0}.mirdeep.result.novel.xls'.format(sample), '{0}.mirdeep.result.known.xls'.format(sample)
 
 
-def main():
-    csvs = glob.glob('./*/*.csv')
-    for csv in csvs:
-        sample = sample_name_parser(csv)
+def main(args):
+    #csvs = glob.glob('./*/*.csv')
+    for idx, csv in enumerate(args.csvs):
+        #sample = sample_name_parser(csv)
+        sample = args.samples[idx]
         print sample
         #
         novel_fn, known_fn = file_preprocessing(sample, csv)
@@ -54,4 +55,9 @@ def main():
 
 
 if __name__=='__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-cs', '--csvs', nargs='+', help='miRDeep2 results (csv format)')
+    parser.add_argument('-ss', '--samples', nargs='+', help='miRDeep2 results (csv format)')
+    args = parser.parse_args()
+    main(args)
