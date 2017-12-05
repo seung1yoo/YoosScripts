@@ -9,7 +9,7 @@ def goDescDicMaker(go_table):
     #
     return goDescDic
 
-def annoDicMaker(xls, title_key, go_key, probe_key, gene_key, desc_key, go_delimiter):
+def annoDicMaker(xls, title_key, go_key, probe_key, gene_key, desc_keys, go_delimiter):
     annoDic = dict()
     for line in open(xls):
         items = line.strip().split('\t')
@@ -17,15 +17,21 @@ def annoDicMaker(xls, title_key, go_key, probe_key, gene_key, desc_key, go_delim
             go_idx = items.index(go_key)
             probe_idx = items.index(probe_key)
             gene_idx = items.index(gene_key)
-            desc_idx = items.index(desc_key)
+            desc_idxs = []
+            for desc_key in desc_keys:
+                desc_idxs.append(items.index(desc_key))
             continue
         if items[go_idx] in ['-']:
             continue
+        descs = []
+        for desc_idx in desc_idxs:
+            descs.append(items[desc_idx])
+        desc = '@'.join(descs)
         for go in items[go_idx].split(go_delimiter):
             go = go.strip("\"")
             annoDic.setdefault(go, {}).setdefault(\
 		items[probe_idx], \
-		(items[gene_idx], items[desc_idx]))
+		(items[gene_idx], desc))
     #
     print ('## No. Gene Ontology in {0} : {1}'.format(xls, len(annoDic)))
     return annoDic
@@ -73,7 +79,7 @@ def lister(idxs, items):
     except ValueError: some_list = [float(0) for x in some_list] 
     return some_list
 
-def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, desc_key):
+def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, desc_keys):
     expDic = dict()
     expOutDic = dict()
     for line in open(xls):
@@ -83,7 +89,9 @@ def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, de
             import re
             probe_idx = items.index(probe_key)
             gene_idx = items.index(gene_key)
-            desc_idx = items.index(desc_key)
+            desc_idxs = []
+            for desc_key in desc_keys:
+                desc_idxs.append(items.index(desc_key))
             exp_idxs = [i for i, item in enumerate(items) if re.search('^EXP', item)]
             samples = [items[x].split(':')[1] for x in exp_idxs]
             #log2fc_idxs = [i for i, item in enumerate(items) if re.search('Log2FC$', item.strip("\""))]
@@ -121,13 +129,17 @@ def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, de
         if min(v_list) > float(value):
             filtered = 3
         #
+        descs = []
+        for desc_idx in desc_idxs:
+            descs.append(items[desc_idx])
+        desc = '@'.join(descs)
         if filtered in [0]:
-            expDic.setdefault(items[gene_idx], {}).setdefault('desc', items[desc_idx])
+            expDic.setdefault(items[gene_idx], {}).setdefault('desc', desc)
             expDic.setdefault(items[gene_idx], {}).setdefault('exp', exp_list)
             expDic.setdefault(items[gene_idx], {}).setdefault('log2fc', log2fc_list)
             expDic.setdefault(items[gene_idx], {}).setdefault('v', v_list)
         else:
-            expOutDic.setdefault(items[gene_idx], {}).setdefault('desc', items[desc_idx])
+            expOutDic.setdefault(items[gene_idx], {}).setdefault('desc', desc)
             expOutDic.setdefault(items[gene_idx], {}).setdefault('exp', exp_list)
             expOutDic.setdefault(items[gene_idx], {}).setdefault('log2fc', log2fc_list)
             expOutDic.setdefault(items[gene_idx], {}).setdefault('v', v_list)
@@ -187,10 +199,10 @@ def main(args):
     go_key = args.primarykeys[1]
     probe_key = args.primarykeys[2]
     gene_key = args.primarykeys[3]
-    desc_key = args.primarykeys[4]
+    desc_keys = args.primarykeys[4].split('@')
     #### take GO infos.
     goDescDic = goDescDicMaker(args.go_table)
-    annoDic = annoDicMaker(args.xls, title_key, go_key, probe_key, gene_key, desc_key, args.go_delimiter)
+    annoDic = annoDicMaker(args.xls, title_key, go_key, probe_key, gene_key, desc_keys, args.go_delimiter)
     #### make the output prefix
     if not os.path.isdir('{0}'.format(args.outdir)):
         os.system('mkdir -p {0}'.format(args.outdir))
@@ -204,7 +216,7 @@ def main(args):
     #### make exp
     expDic, expOutDic, samples, log2fc_cols, v_cols = expFilter(\
             args.xls, args.log2fc, args.statistics, args.value, \
-            title_key, probe_key, gene_key, desc_key)
+            title_key, probe_key, gene_key, desc_keys)
     exp_file = expMaker(outprefix, expDic, samples, orderedSamples)
 
 if __name__=='__main__':
@@ -215,7 +227,7 @@ if __name__=='__main__':
     parser.add_argument('-x', '--xls', help='genes.xls',
             default='gene.xls')
     parser.add_argument('-o', '--outdir', help='outdir name',
-            default='GSEA')
+            default='./')
     parser.add_argument('-s', '--species', help='species name or prefix name',
             default='test_species')
     parser.add_argument('-f', '--log2fc', help='exp table filter',
@@ -228,7 +240,7 @@ if __name__=='__main__':
             default=',')
     parser.add_argument('-gs', '--gsea-sample',
             default='S0001,G01:S0002,G01:S0003,G02:S0004,G02')
-    parser.add_argument('-pks', '--primarykeys', nargs='+', help='Title_key GO_key Probe_key Gene_key Desc_key',
-            default=['Order', 'GeneOntology', 'GeneAcc', 'GeneId', 'Desc'])
+    parser.add_argument('-pks', '--primarykeys', nargs='+', help='Title_key GO_key Probe_key Gene_key Desc_keys(Name@Desc)',
+            default=['Order', 'GeneOntology', 'GeneAcc', 'GeneId', 'GeneName@Desc'])
     args = parser.parse_args()
     main(args)
