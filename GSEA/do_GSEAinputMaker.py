@@ -77,6 +77,8 @@ def lister(idxs, items):
         some_list.append(items[idx])
     try: some_list = [float(x) for x in some_list]
     except ValueError: some_list = [float(0) for x in some_list] 
+    if len(some_list) in [0]: # This is for other format of RINE-report(genes.xls)
+        some_list = [0.0] # this format has not log2fc$, PV$, QV$
     return some_list
 
 def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, desc_keys):
@@ -241,6 +243,6 @@ if __name__=='__main__':
     parser.add_argument('-gs', '--gsea-sample',
             default='S0001,G01:S0002,G01:S0003,G02:S0004,G02')
     parser.add_argument('-pks', '--primarykeys', nargs='+', help='Title_key GO_key Probe_key Gene_key Desc_keys(Name@Desc)',
-            default=['Order', 'GeneOntology', 'GeneAcc', 'GeneId', 'GeneName@Desc'])
+            default=['Order', 'GeneOntology', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
     args = parser.parse_args()
     main(args)

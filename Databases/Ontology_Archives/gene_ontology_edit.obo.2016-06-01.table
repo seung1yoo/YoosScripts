@@ -46676,3 +46676,4 @@ GO:0046718	biological_process	viral entry into host cell
 GO:0006712	biological_process	mineralocorticoid catabolic process
 GO:0090657	biological_process	telomeric loop disassembly
 GO:0098990	biological_process	AMPA selective glutamate receptor signaling pathway
+GO:0198738	biological_process	cell-cell signaling by wnt
