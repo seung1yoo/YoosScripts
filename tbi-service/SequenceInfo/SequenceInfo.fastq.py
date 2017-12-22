@@ -10,7 +10,8 @@ def fileFinder(path, extension, firstTag, secondTag):
     for afile in filesBites.decode("utf-8").split('\n'):
         if not afile:
             continue
-        fileName = afile.split('/')[-1].rstrip(extension)
+        fileName = afile.split('/')[-1].split('.{0}'.format(extension))[0]
+        print fileName
         if fileName.endswith(firstTag):
             sampleName = fileName.strip(firstTag)
             fileDic.setdefault(sampleName, {}).setdefault('R1', os.path.abspath(afile))
@@ -20,10 +21,12 @@ def fileFinder(path, extension, firstTag, secondTag):
             sampleName = fileName.strip(secondTag)
             fileDic.setdefault(sampleName, {}).setdefault('R2', os.path.abspath(afile))
         else:
-            print("ERROR: Check the Tag arguments")
-            import sys
-            sys.exit()
+            #print("ERROR: Check the Tag arguments")
+            #import sys
+            #sys.exit()
+            pass
     #
+    print fileDic
     return fileDic
 
 def exe_FasterFastqStatistics(script, rs):
