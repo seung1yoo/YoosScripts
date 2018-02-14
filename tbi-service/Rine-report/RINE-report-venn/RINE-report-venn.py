@@ -473,7 +473,7 @@ def member_selector(inputFile):
     annoHeader = []
     for line in open(inputFile):
         items = line.rstrip().split('\t')
-        if items[0] in ['GeneId']:
+        if items[0] in ['GeneId', 'Order']:
             idxDic = dict()
             for idx, item in enumerate(items):
                 if item.startswith('DEG:') and item.endswith(':SELECT'):
