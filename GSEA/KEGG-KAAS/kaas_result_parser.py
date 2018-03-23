@@ -87,8 +87,8 @@ def main(args):
     #
     keggAnnoDic, keggTableDic = kaas_q1_parser(args.kaas_q1)
     keggTableMaker(keggTableDic, args.db_table_out)
-    #keggUpdate(keggAnnoDic, args.genes_in, args.genes_out, 'Order', 'GeneId', ',')
-    keggUpdate(keggAnnoDic, args.genes_in, args.genes_out, 'Order', 'GeneAcc', ',')
+    keggUpdate(keggAnnoDic, args.genes_in, args.genes_out, 'Order', 'GeneId', ',')
+    #keggUpdate(keggAnnoDic, args.genes_in, args.genes_out, 'Order', 'GeneAcc', ',')
 
 if __name__=='__main__':
     import argparse
