@@ -17,8 +17,8 @@ def kaas_q1_parser(infile):
         elif line.startswith('D'):
             items = line[1:].rstrip('\n').split(';')
             items = [x.strip() for x in items]
-            #myGene = items[0].split('|')[0]
-            myGene = items[0].split('-')[0]
+            myGene = items[0].split('|')[0]
+            #myGene = items[0].split('-')[0]
             keggOrthology_id = items[1].split()[0] # K(kegg Orthology) id
             keggEnzyme_alias = ' '.join(items[1].split()[1:]) # EC alias
             keggEnzyme_desc = items[2] # EC desc
