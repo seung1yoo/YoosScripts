@@ -1,0 +1,4 @@
+Annotate Protein Sequences
+URL ==> http://eggnogdb.embl.de/#/app/emapper
+Mapping mode ==> DIAMOND
+input files ==> *.emapper.annotations
