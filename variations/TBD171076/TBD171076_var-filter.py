@@ -160,7 +160,7 @@ def filter_diffhomo(invcf, prefix, sample_1, sample_2):
 
     return outvcf, prefix
 
-def vcf2xls(invcf, prefix):
+def vcf2xls(invcf, prefix, sample_1, sample_2):
     prefix = '{0}'.format(prefix)
     outxls = '{0}.xls'.format(prefix)
     if os.path.isfile(outxls):
@@ -179,7 +179,14 @@ def vcf2xls(invcf, prefix):
                 new_items.append(items[4]) #alt
                 new_items.extend(['SN={0}'.format(x) for x in items[9:]]) #samples for GT
                 new_items.extend(['SN={0}'.format(x) for x in items[9:]]) #samples for AD
+                new_items.extend(['SN={0}'.format(x) for x in items[9:]]) #samples for Origin
                 out.write('{0}\n'.format('\t'.join([str(x) for x in new_items])))
+                #
+                s_idxDic = dict()
+                for idx, s_name in enumerate(items[9:]):
+                    s_idx = idx
+                    s_idxDic.setdefault(s_name, s_idx)
+                #
                 continue
             #
             formatTag = items[8]
@@ -192,9 +199,22 @@ def vcf2xls(invcf, prefix):
             for sample in samples:
                 sampleTags = sample.split(':')
                 new_samples.append('GT={0}'.format(sampleTags[idxDic['GT']]))
+            #
             for sample in samples:
                 sampleTags = sample.split(':')
                 new_samples.append('AD={0}'.format(sampleTags[idxDic['AD']]))
+            #
+            gts = []
+            for sample in samples:
+                sampleTags = sample.split(':')
+                gts.append(sampleTags[idxDic['GT']])
+            for gt in gts:
+                if gt in [samples[s_idxDic[sample_1]].split(':')[idxDic['GT']]]:
+                    new_samples.append('ORIGIN={0}'.format(sample_1))
+                elif gt in [samples[s_idxDic[sample_2]].split(':')[idxDic['GT']]]:
+                    new_samples.append('ORIGIN={0}'.format(sample_2))
+                else:
+                    new_samples.append('ORIGIN=OTHER')
             #
             new_items.append(items[0]) #chrom
             new_items.append(items[1]) #pos
@@ -217,8 +237,7 @@ def main(args):
     avcf, prefix = filter_badvar(avcf, prefix)
     avcf, prefix = filter_diffhomo(avcf, prefix, "1-HWANGGEUM", "2-DAEPUNG")
     #
-    outxls, prefix = vcf2xls(avcf, prefix)
-
+    outxls, prefix = vcf2xls(avcf, prefix, "1-HWANGGEUM", "2-DAEPUNG")
 
 if __name__=='__main__':
     import argparse
