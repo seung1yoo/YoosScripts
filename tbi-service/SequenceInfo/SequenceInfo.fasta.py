@@ -1,14 +1,9 @@
 
-def run_clc_sequence_info(file, cutoff):
+def run_clc_sequence_info(file, cutoff, program):
     outfile = "{0}.{1}.SeqInfo".format(file, cutoff)
     if not os.path.isfile(outfile):
         pass
-        #cmd = "~/YoosScripts/BioTools/CLC_AC_4.4.2_mac64/"\
-        #cmd = "/BiO/BioPeople/siyoo/00.Tools/clc-assembly-cell-4.4.2-linux_64/"\
-        #cmd = "/TBI/People/tbi/siyoo/YoosScripts/BioTools/CLC_AC_4.4.2_linux64/"\
-        #cmd = "~/YoosScripts/BioTools/CLC_AC_4.4.2_linux64/"\
-        cmd = "/BiO/BioPeople/siyoo/YoosScripts/BioTools/CLC_AC_4.4.2_linux64/"\
-              "clc_sequence_info -r -n -c {2} {0} > {1}".format(file, outfile, cutoff)
+        cmd = "{3} -r -n -c {2} {0} > {1}".format(file, outfile, cutoff, program)
         print (cmd)
         os.system(cmd)
     else:
@@ -77,12 +72,12 @@ def number_format(n):
         if not cnt: break
     return s
 
-def main(path, cutoff, extensions):
+def main(path, cutoff, extensions, program):
     files = makeFileList(path, extensions)
 
     infoDict = dict() 
     for file in files:
-        seqinfo_file = run_clc_sequence_info(file, cutoff)
+        seqinfo_file = run_clc_sequence_info(file, cutoff, program)
         infoDict.setdefault(seqinfo_file, {})
         infoDict = make_infoDict(seqinfo_file, infoDict)
 
@@ -110,8 +105,9 @@ if __name__=='__main__':
     import re
     import argparse
     parser = argparse.ArgumentParser(description='Run clc_sequence_info and Merge')
+    parser.add_argument('-a', '--program', default='~/YoosScripts/BioTools/CLC_AC_4.4.2_linux64/clc_sequence_info')
     parser.add_argument('-p', '--path', type=str, help='Input the target PATH')
     parser.add_argument('-c', '--cutoff', type=str, default='1', help='Input the minimum cut off value')
     parser.add_argument('-e', '--extensions', nargs='+', help='Input the filename extensions as list')
     args = parser.parse_args()
-    main(args.path, args.cutoff, args.extensions)
+    main(args.path, args.cutoff, args.extensions, args.program)
