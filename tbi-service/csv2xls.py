@@ -4,7 +4,7 @@ def main(args):
 
     out = open(args.xls, 'w')
     for items in csv.reader(open(args.csv)):
-        out.write('{0}\n'.format('\t'.join(items)))
+        out.write('{0}\n'.format('\t'.join([x.strip() for x in items])))
     out.close()
 
 if __name__=='__main__':
