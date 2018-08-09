@@ -22,7 +22,7 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric, per
     -order descending -create_gcts true -create_svgs true \
     -include_only_symbols true -make_sets true -median false \
     -num 100 -plot_top_x 50 -rnd_seed timestamp -save_rnd_lists false \
-    -set_max 1000 -set_min 3 -zip_report false \
+    -set_max 500 -set_min 10 -zip_report false \
     -gui false'''.format(jar, exp, cls, pair, gmt, chip, outdir, rpt_label, metric, permute)
     #
     return command
