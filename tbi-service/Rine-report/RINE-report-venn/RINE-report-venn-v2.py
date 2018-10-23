@@ -515,31 +515,15 @@ def venn_exe(venn, deg_sets, unitss, tag, n_mem, prefix):
 
     return set_collections
 
-def venn_input_maker(memDic):
-    up_unitss = []
-    down_unitss = []
+def venn_input_maker(memDic, first, first_ud, second, second_ud):
     #
-    deg_sets = memDic.keys()
-    deg_sets = sorted(deg_sets)
-    for deg_set in deg_sets:
-        udDic = memDic[deg_set]
-        for ud, members in udDic.iteritems():
-            if ud in ['UP']:
-                up_unitss.append(members)
-            elif ud in ['DOWN']:
-                down_unitss.append(members)
+    deg_sets = [first, second]
     #
-    total_unitss = []
-    for idx, deg_set in enumerate(deg_sets):
-        up_units = up_unitss[idx]
-        down_units = down_unitss[idx]
-        #
-        total_units = []
-        total_units.extend(up_units)
-        total_units.extend(down_units)
-        total_unitss.append(total_units)
+    unitss = []
+    unitss = [memDic[first][first_ud]]
+    unitss.append(memDic[second][second_ud])
     #
-    return deg_sets, up_unitss, down_unitss, total_unitss
+    return deg_sets, unitss
 
 def table_maker(deg_sets, set_collections, tag, prefix, annoDic, annoHeader):
     out = open('{0}.{1}.tabls.xls'.format(prefix, tag), 'w')
@@ -559,17 +543,12 @@ def main(args):
         for ud, members in udDic.iteritems():
             print '# DEG set : {0} : {1} : {2}'.format(deg_set, ud, len(members))
     #
-    deg_sets, up_unitss, down_unitss, total_unitss = venn_input_maker(memDic)
+    venn_tag = '{0}_{1}-{2}_{3}'.format(args.first_tag, args.first_ud, args.second_tag, args.second_ud)
+    deg_sets, unitss = venn_input_maker(memDic, args.first, args.first_ud, args.second, args.second_ud)
     for idx, deg_set in enumerate(deg_sets):
-        print '{0} : up {1}'.format(deg_set, len(up_unitss[idx]))
-        print '{0} : down {1}'.format(deg_set, len(down_unitss[idx]))
-        print '{0} : total {1}'.format(deg_set, len(total_unitss[idx]))
-    set_collections = venn_exe(venn, deg_sets, up_unitss, 'UP', len(deg_sets), args.prefix)
-    table_maker(deg_sets, set_collections, 'UP', args.prefix, annoDic, annoHeader)
-    set_collections = venn_exe(venn, deg_sets, down_unitss, 'DOWN', len(deg_sets), args.prefix)
-    table_maker(deg_sets, set_collections, 'DOWN', args.prefix, annoDic, annoHeader)
-    set_collections = venn_exe(venn, deg_sets, total_unitss, 'TOTAL', len(deg_sets), args.prefix)
-    table_maker(deg_sets, set_collections, 'TOTAL', args.prefix, annoDic, annoHeader)
+        print '{0} : {1}'.format(deg_set, len(unitss[idx]))
+    set_collections = venn_exe(venn, deg_sets, unitss, venn_tag, len(deg_sets), args.prefix)
+    table_maker(deg_sets, set_collections, venn_tag, args.prefix, annoDic, annoHeader)
     #
 
 
@@ -577,9 +556,21 @@ def main(args):
 
 if __name__=='__main__':
     import argparse
-    parser = argparse.ArgumentParser(description='auto-drow venndiagram for DEG comparison.')
+    parser = argparse.ArgumentParser(description='auto-drow venndiagrm for DEG comparison between two set.')
     parser.add_argument('-i', '--input', help='genes.de.xls',
-        default='/Volumes/TBI_siyoo/TBI_NonHumanTeam/Report-repository/TBD170758-gntech-Pig-RNAref-Report-P005-20171016/DEG/genes.de.xls')
+        default='/Volumes/TBI_siyoo/TBI_NonHumanTeam/Report-repository/TBD180590/DEG_Comparison_TBD180662/gene.de.select.xls')
+    parser.add_argument('-f', '--first', help='first DEG set',
+        default='none,none2 vs col,col2')
+    parser.add_argument('-ftg', '--first-tag', help='first DEG tag',
+        default='none_vs_col')
+    parser.add_argument('-fud', '--first-ud', help='first DEG : UP or DOWN',
+        default='UP')
+    parser.add_argument('-s', '--second', help='second DEG set',
+        default='none,none2 vs glu,glu2')
+    parser.add_argument('-stg', '--second-tag', help='second DEG tag',
+        default='none_vs_glu')
+    parser.add_argument('-sud', '--second-ud', help='second DEG : UP or DOWN',
+        default='DOWN')
     parser.add_argument('-o', '--prefix', help='prefix of output file',
         default='venndiagram')
     args = parser.parse_args()
