@@ -1,0 +1,2 @@
+python RINE_GoEnrich_v1.py --sample-in ./inputset_1/sample.denovo.in --genes ./inputset_1/genes.xls --go-to-genes ./inputset_1/go_to_genes_with_ancestor.xls --go-enrich ./inputset_1/go_enrich.txt --outprefix inputset_1-go_enrich
+python RINE_GoEnrich_v1.py --sample-in ./inputset_2/sample.denovo.in --genes ./inputset_2/genes.xls --go-to-genes ./inputset_2/go_to_genes_with_ancestor.xls --go-enrich ./inputset_2/go_enrich.txt --outprefix inputset_2-go_enrich
