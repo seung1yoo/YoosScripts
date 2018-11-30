@@ -1,0 +1,168 @@
++D	RModule
+#<h2><a href="/kegg/kegg2.html"><img src="/Fig/bget/kegg3.gif" align="middle" border=0></a>&nbsp; KEGG Reaction Modules</h2> Greentea
+!
+A<b>Carboxylic acid metabolism</b>
+B  2-Oxocarboxylic acid chain extension
+C    RM001  2-Oxocarboxylic acid chain extension by tricarboxylic acid pathway
+D      CSA018684.1; M00010  Citrate cycle, first carbon oxidation, oxaloacetate => 2-oxoglutarate
+D      CSA018682.1; M00010  Citrate cycle, first carbon oxidation, oxaloacetate => 2-oxoglutarate
+D      CSA034045.1; M00010  Citrate cycle, first carbon oxidation, oxaloacetate => 2-oxoglutarate
+D      CSA018684.1; M00433  Lysine biosynthesis, 2-oxoglutarate => 2-oxoadipate
+D      CSA018682.1; M00433  Lysine biosynthesis, 2-oxoglutarate => 2-oxoadipate
+D      CSA034045.1; M00433  Lysine biosynthesis, 2-oxoglutarate => 2-oxoadipate
+D      CSA018684.1; M00608  2-Oxocarboxylic acid chain extension, 2-oxoglutarate => 2-oxoadipate => 2-oxopimelate => 2-oxosuberate
+D      CSA018682.1; M00608  2-Oxocarboxylic acid chain extension, 2-oxoglutarate => 2-oxoadipate => 2-oxopimelate => 2-oxosuberate
+D      CSA034045.1; M00608  2-Oxocarboxylic acid chain extension, 2-oxoglutarate => 2-oxoadipate => 2-oxopimelate => 2-oxosuberate
+D      CSA018684.1; M00535  Isoleucine biosynthesis, pyruvate => 2-oxobutanoate
+D      CSA018682.1; M00535  Isoleucine biosynthesis, pyruvate => 2-oxobutanoate
+D      CSA034045.1; M00535  Isoleucine biosynthesis, pyruvate => 2-oxobutanoate
+D      CSA018684.1; M00432  Leucine biosynthesis, 2-oxoisovalerate => 2-oxoisocaproate
+D      CSA018682.1; M00432  Leucine biosynthesis, 2-oxoisovalerate => 2-oxoisocaproate
+D      CSA034045.1; M00432  Leucine biosynthesis, 2-oxoisovalerate => 2-oxoisocaproate
+B  2-Oxocarboxylic acid chain modification
+C    RM002  Carboxyl to amino conversion using protective N-acetyl group (basic amino acid synthesis)
+D      CSA018684.1; M00028  Ornithine biosynthesis, glutamate => ornithine
+D      CSA018682.1; M00028  Ornithine biosynthesis, glutamate => ornithine
+D      CSA034045.1; M00028  Ornithine biosynthesis, glutamate => ornithine
+D      CSA018684.1; M00763  Ornithine biosynthesis, mediated by LysW, glutamate => ornithine
+D      CSA018682.1; M00763  Ornithine biosynthesis, mediated by LysW, glutamate => ornithine
+D      CSA034045.1; M00763  Ornithine biosynthesis, mediated by LysW, glutamate => ornithine
+D      CSA018684.1; M00031  Lysine biosynthesis, mediated by LysW, 2-aminoadipate => lysine
+D      CSA018682.1; M00031  Lysine biosynthesis, mediated by LysW, 2-aminoadipate => lysine
+D      CSA034045.1; M00031  Lysine biosynthesis, mediated by LysW, 2-aminoadipate => lysine
+C    RM032  Carboxyl to amino conversion without using protective group
+D      CSA018684.1; M00033  Ectoine biosynthesis, aspartate => ectoine
+D      CSA018682.1; M00033  Ectoine biosynthesis, aspartate => ectoine
+D      CSA034045.1; M00033  Ectoine biosynthesis, aspartate => ectoine
+C    RM033  Branched-chain addition (branched-chain amino acid synthesis)
+D      CSA018684.1; M00019  Valine/isoleucine biosynthesis, pyruvate => valine / 2-oxobutanoate => isoleucine
+D      CSA018682.1; M00019  Valine/isoleucine biosynthesis, pyruvate => valine / 2-oxobutanoate => isoleucine
+D      CSA034045.1; M00019  Valine/isoleucine biosynthesis, pyruvate => valine / 2-oxobutanoate => isoleucine
+C    RM030  Glucosinolate synthesis
+C    RG001  Reductive amination of 2-oxocarboxylic acid (aminotransferase reaction)
+B  Fatty acid synthesis and degradation
+C    RM018  Beta oxidation in acyl-CoA degradation
+D      CSA018684.1; M00087  beta-Oxidation
+D      CSA018682.1; M00087  beta-Oxidation
+D      CSA034045.1; M00087  beta-Oxidation
+C    RM020  Fatty acid synthesis using acetyl-CoA (reversal of RM018)
+D      CSA018684.1; M00085  Fatty acid biosynthesis, elongation, mitochondria
+D      CSA018682.1; M00085  Fatty acid biosynthesis, elongation, mitochondria
+D      CSA034045.1; M00085  Fatty acid biosynthesis, elongation, mitochondria
+D      CSA018684.1; M00415  Fatty acid biosynthesis, elongation, endoplasmic reticulum
+D      CSA018682.1; M00415  Fatty acid biosynthesis, elongation, endoplasmic reticulum
+D      CSA034045.1; M00415  Fatty acid biosynthesis, elongation, endoplasmic reticulum
+C    RM021  Fatty acid synthesis using malonyl-CoA
+D      CSA018684.1; M00082  Fatty acid biosynthesis, initiation
+D      CSA018682.1; M00082  Fatty acid biosynthesis, initiation
+D      CSA034045.1; M00082  Fatty acid biosynthesis, initiation
+D      CSA018684.1; M00083  Fatty acid biosynthesis, elongation
+D      CSA018682.1; M00083  Fatty acid biosynthesis, elongation
+D      CSA034045.1; M00083  Fatty acid biosynthesis, elongation
+B  Acyl-CoA metabolism
+C    RM019  Acyl-CoA conversion via dicarboxylate semialdehyde
+D      CSA018684.1; M00013  Malonate semialdehyde pathway, propanoyl-CoA => Acetyl-CoA
+D      CSA018682.1; M00013  Malonate semialdehyde pathway, propanoyl-CoA => Acetyl-CoA
+D      CSA034045.1; M00013  Malonate semialdehyde pathway, propanoyl-CoA => Acetyl-CoA
+D      CSA018684.1; M00375  Hydroxypropionate-hydroxybutylate cycle
+D      CSA018682.1; M00375  Hydroxypropionate-hydroxybutylate cycle
+D      CSA034045.1; M00375  Hydroxypropionate-hydroxybutylate cycle
+D      CSA018684.1; M00376  3-Hydroxypropionate bi-cycle
+D      CSA018682.1; M00376  3-Hydroxypropionate bi-cycle
+D      CSA034045.1; M00376  3-Hydroxypropionate bi-cycle
+#
+A<b>Aromatics degradation</b>
+B  Methyl to carboxyl conversion on aromatic ring
+C    RM003  Methyl to carboxyl conversion on aromatic ring
+D      CSA018684.1; M00538  Toluene degradation, toluene => benzoate
+D      CSA018682.1; M00538  Toluene degradation, toluene => benzoate
+D      CSA034045.1; M00538  Toluene degradation, toluene => benzoate
+D      CSA018684.1; M00537  Xylene degradation, xylene => methylbenzoate
+D      CSA018682.1; M00537  Xylene degradation, xylene => methylbenzoate
+D      CSA034045.1; M00537  Xylene degradation, xylene => methylbenzoate
+D      CSA018684.1; M00419  Cymene degradation, p-cymene => p-cumate
+D      CSA018682.1; M00419  Cymene degradation, p-cymene => p-cumate
+D      CSA034045.1; M00419  Cymene degradation, p-cymene => p-cumate
+C    RM015  Methyl to carboxyl conversion on aromatic ring, anaerobic
+D      CSA018684.1; M00418  Toluene degradation, anaerobic, toluene => benzoyl-CoA
+D      CSA018682.1; M00418  Toluene degradation, anaerobic, toluene => benzoyl-CoA
+D      CSA034045.1; M00418  Toluene degradation, anaerobic, toluene => benzoyl-CoA
+B  Dihydroxylation of aromatic ring
+C    RM004  Dihydroxylation of aromatic ring, type 1 (dioxygenase and dehydrogenase reactions)
+D      CSA018684.1; M00547  Benzene/toluene degradation, benzene => catechol / toluene => 3-methylcatechol
+D      CSA018682.1; M00547  Benzene/toluene degradation, benzene => catechol / toluene => 3-methylcatechol
+D      CSA034045.1; M00547  Benzene/toluene degradation, benzene => catechol / toluene => 3-methylcatechol
+C    RM005  Dihydroxylation of aromatic ring, type 1a (dioxygenase and decarboxylating dehydrogenase reactions)
+D      CSA018684.1; M00551  Benzoate degradation, benzoate => catechol
+D      CSA018682.1; M00551  Benzoate degradation, benzoate => catechol
+D      CSA034045.1; M00551  Benzoate degradation, benzoate => catechol
+C    RG002  Dihydroxylation of aromatic ring, type 1b (single dioxygenase reaction)
+C    RM006  Dihydroxylation of aromatic ring, type 2 (two monooxygenase reactions)
+D      CSA018684.1; M00548  Benzene degradation, benzene => catechol
+D      CSA018682.1; M00548  Benzene degradation, benzene => catechol
+D      CSA034045.1; M00548  Benzene degradation, benzene => catechol
+C    RM007  Dihydroxylation of aromatic ring, type 3 (dealkylation and monooxygenase reactions)
+B  Cleavage of aromatic ring
+C    RM008  Ortho-cleavage of dihydroxylated aromatic ring
+D      CSA018684.1; M00568  Catechol ortho-cleavage, catechol => 3-oxoadipate
+D      CSA018682.1; M00568  Catechol ortho-cleavage, catechol => 3-oxoadipate
+D      CSA034045.1; M00568  Catechol ortho-cleavage, catechol => 3-oxoadipate
+C    RM009  Meta-cleavage of dihydroxylated aromatic ring
+D      CSA018684.1; M00569  Catechol meta-cleavage, catechol => acetyl-CoA / 4-methylcatechol => propanoyl-CoA
+D      CSA018682.1; M00569  Catechol meta-cleavage, catechol => acetyl-CoA / 4-methylcatechol => propanoyl-CoA
+D      CSA034045.1; M00569  Catechol meta-cleavage, catechol => acetyl-CoA / 4-methylcatechol => propanoyl-CoA
+D      CSA018684.1; M00545  Trans-cinnamate degradation, trans-cinnamate => acetyl-CoA
+D      CSA018682.1; M00545  Trans-cinnamate degradation, trans-cinnamate => acetyl-CoA
+D      CSA034045.1; M00545  Trans-cinnamate degradation, trans-cinnamate => acetyl-CoA
+C    RM013  Ortho-cleavage of halogenated aromatic ring
+C    RM016  Ring cleavage via beta oxidation, anaerobic
+D      CSA018684.1; M00540  Benzoate degradation, cyclohexanecarboxylic acid =>pimeloyl-CoA
+D      CSA018682.1; M00540  Benzoate degradation, cyclohexanecarboxylic acid =>pimeloyl-CoA
+D      CSA034045.1; M00540  Benzoate degradation, cyclohexanecarboxylic acid =>pimeloyl-CoA
+C    RM017  Ring cleavage via Baeyer-Villiger oxidation
+B  Dihydroxylation and cleavage of aromatic ring
+C    RM010  Dihydroxylation and meta-cleavage of aromatic ring, type 1
+D      CSA018684.1; M00539  Cumate degradation, p-cumate => 2-oxopent-4-enoate + 2-methylpropanoate
+D      CSA018682.1; M00539  Cumate degradation, p-cumate => 2-oxopent-4-enoate + 2-methylpropanoate
+D      CSA034045.1; M00539  Cumate degradation, p-cumate => 2-oxopent-4-enoate + 2-methylpropanoate
+D      CSA018684.1; M00545  Trans-cinnamate degradation, trans-cinnamate => 2-oxopent-4-enoate + fumarate
+D      CSA018682.1; M00545  Trans-cinnamate degradation, trans-cinnamate => 2-oxopent-4-enoate + fumarate
+D      CSA034045.1; M00545  Trans-cinnamate degradation, trans-cinnamate => 2-oxopent-4-enoate + fumarate
+D      CSA018684.1; M00543  Biphenyl degradation, biphenyl => 2-oxopent-4-enoate + benzoate
+D      CSA018682.1; M00543  Biphenyl degradation, biphenyl => 2-oxopent-4-enoate + benzoate
+D      CSA034045.1; M00543  Biphenyl degradation, biphenyl => 2-oxopent-4-enoate + benzoate
+C    RM011  Dihydroxylation and meta-cleavage of aromatic ring, type 1b
+D      CSA018684.1; M00544  Carbazole degradation, carbazole => 2-oxopent-4-enoate + anthranilate
+D      CSA018682.1; M00544  Carbazole degradation, carbazole => 2-oxopent-4-enoate + anthranilate
+D      CSA034045.1; M00544  Carbazole degradation, carbazole => 2-oxopent-4-enoate + anthranilate
+C    RM012  Dihydroxylation and meta-cleavage of aromatic ring, type 3a
+D      CSA018684.1; M00533  Homoprotocatechuate degradation, homoprotocatechuate => 2-oxohept-3-enedioate
+D      CSA018682.1; M00533  Homoprotocatechuate degradation, homoprotocatechuate => 2-oxohept-3-enedioate
+D      CSA034045.1; M00533  Homoprotocatechuate degradation, homoprotocatechuate => 2-oxohept-3-enedioate
+C    RM014  Ring removal from polycyclic aromatic ring
+D      CSA018684.1; M00534  Naphthalene degradation, naphthalene => salicylate
+D      CSA018682.1; M00534  Naphthalene degradation, naphthalene => salicylate
+D      CSA034045.1; M00534  Naphthalene degradation, naphthalene => salicylate
+#
+A<b>Other</b>
+B  Amino acid metabolism
+C    RM025  Conversion of amino acid moiety to carboxyl group (biogenic amine metabolism)
+B  Nucleotide metabolism
+C    RM024  Pyrimidine degradation
+B  Sugar metabolism
+C    RM022  Nucleotide sugar biosynthesis, type 1
+C    RM023  Nucleotide sugar biosynthesis, type 2
+C    RM034  Sugar degradation to aldehyde and pyruvate
+D      CSA018684.1; M00008  Entner-Doudoroff pathway, glucose-6P => glyceraldehyde-3P + pyruvate
+D      CSA018682.1; M00008  Entner-Doudoroff pathway, glucose-6P => glyceraldehyde-3P + pyruvate
+D      CSA034045.1; M00008  Entner-Doudoroff pathway, glucose-6P => glyceraldehyde-3P + pyruvate
+B  Aromatics metabolism
+C    RM027  Hydroxylation and methylation motif
+C    RM026  Hydroxylation and decarboxylation motif
+C    RM028  Flavonoid synthesis
+C    RM029  Pterocarpan synthesis
+C    RM031  Oxime to acetate conversion
+!
+#<hr>
+#<b>[ <a href="/kegg/reaction/rmodule.html">RMODULE</a> | <a href="/kegg/brite.html">BRITE</a> | <a href="/kegg/pathway.html">PATHWAY</a> | <a href="/kegg/kegg2.html">KEGG2</a> | <a href="/kegg/">KEGG</a> ]</b><br>
+#Last updated: July 14, 2015
