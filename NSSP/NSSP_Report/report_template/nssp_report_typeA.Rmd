@@ -127,6 +127,10 @@ knitr::kable(clean_stats_data[,c(1,2,3,9)], caption = "Preprocessing Results", a
 
 ```
 
+- No. Seqs : Number of reads remaining after preprocessing
+- Residues : The remaining base pairs after preprocessing
+- GC : GC ratio after preprocessing
+
 ## Reference mapping 
 ```{r reference_mapping, results='asis', echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
@@ -137,6 +141,10 @@ knitr::kable(map_stats_data, caption = "Mapping Statistics", align = "c", "pando
 
 ```
 
+- TotalReads : The total number of reads used in the reference mapping
+- MappedReads : Number of reads aligned to reference genome
+- MappedRate : (MappedReads/TotalReads)*100
+
 ## Extract consensus
 ```{r extract_consensus, results='asis', echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
@@ -146,6 +154,12 @@ extconseq_stats_data <- read.table(extconseq_stats_fn, sep = "\t", header = T)
 knitr::kable(extconseq_stats_data, caption = "Extract consensus sequence result", align = "c", "pandoc")
 
 ```
+
+- No.Seqs : The number of consensus extracted from the alignment information in all samples. This means the entire candidate smRNA locus.
+- Residues : The number of consensus base-pairs
+- Average/Minimum/Maximum/N50 : The average/min/max/N50 length of the consensus sequence (candidate smRNA locus).
+- Npct : ratio of N base in consensus sequence
+- GC : ratio of GC base in consensus sequence
 
 ## Candidate of smallRNAs
 ```{r candidate_of_smRNAs, results='asis', echo=FALSE}
@@ -159,4 +173,12 @@ knitr::kable(smrna_sub, align = "c", "pandoc")
 
 ```
 
-- More information is available in the smRNA.xls file.
+- smRNA_candidate : The ID of the candidate small RNA locus, consisting of [contig] _ [start] - [end].
+- contig : The contig ID where the candidate small RNA locus is located.
+- start/end : The genomic location where the candidate small RNA locus is located.
+- length : Length(bp) of candidate small RNA locus
+- ReadCnt:[SampleName] : The mapped read count on the candidate small RNA locus
+- type : The relationship between the locus of the candidate small RNA and the location of the gene.
+- gap : the distance between genes involved in the candidate small RNA
+- gene : genes involved in the candidate small RNA
+- conseq : consensus sequence of smRNA locus
