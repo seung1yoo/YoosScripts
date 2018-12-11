@@ -81,13 +81,13 @@ def main(outprefix, files):
         infoDict = make_infoDict(seqinfo_file, infoDict)
 
     outfile = open("{0}.SeqInfo.Report".format(outprefix), "w")
-    outfile.write('||{0}||{1}||{2}||{3}||{4}||{5}||{6}||{7}||{8}||\n'.format(\
-            'File name', 'No. Contigs', 'Residues', 'Average',\
+    outfile.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\n'.format(\
+            'SampleName', 'No.Seq', 'Residues', 'Average',\
             'Minimum', 'Maximum', 'N50', 'Npct', 'GC'
             ))
     for info_file, ainfoDict in sorted(infoDict.items()):
-        outfile.write('||{0}||{1}||{2}||{3}||{4}||{5}||{6}||{7}||{8}||\n'.format(\
-                info_file.split('/')[-1],
+        outfile.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\n'.format(\
+                info_file.split('/')[-1].split('.')[0],
                 number_format(ainfoDict['No_Reads']),
                 number_format(ainfoDict['Residues']),
                 number_format(ainfoDict['Average']),
