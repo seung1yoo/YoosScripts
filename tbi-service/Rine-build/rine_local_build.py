@@ -1854,6 +1854,7 @@ def build_star_idx(path_finder,fa_fn) :
     cmd.append("%d"%STAR_N_CPU)
     if not os.path.exists(idx_fn) :
         sys.stdout.write("INFO\tStarting to build index for STAR\n")
+        print " ".join(cmd)
         os.system(" ".join(cmd))
     if not os.path.exists(idx_fn) :
         msg="ERRROR\tFailed to build STAR INDEX (%s).\n"%fa_fn
