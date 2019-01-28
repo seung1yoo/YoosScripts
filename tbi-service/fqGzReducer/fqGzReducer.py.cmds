@@ -1,0 +1,8 @@
+#fork
+    zcat TN1901R0912--TCCGCGAA-CCTATCCT_1.fq.gz | head -n 48493820 /dev/stdin | gzip -c > ../TN1901R0912--TCCGCGAA-CCTATCCT_1.fq.gz
+    zcat TN1901R0912--TCCGCGAA-CCTATCCT_2.fq.gz | head -n 48493820 /dev/stdin | gzip -c > ../TN1901R0912--TCCGCGAA-CCTATCCT_2.fq.gz
+    zcat TN1812R2467--GAGTGGAT_1.fq.gz | head -n 49412852 /dev/stdin | gzip -c > ../TN1812R2467--GAGTGGAT_1.fq.gz
+    zcat TN1812R2467--GAGTGGAT_2.fq.gz | head -n 49412852 /dev/stdin | gzip -c > ../TN1812R2467--GAGTGGAT_2.fq.gz
+    zcat TN1901R0911--TCCGCGAA-ATAGAGGC_1.fq.gz | head -n 45380492 /dev/stdin | gzip -c > ../TN1901R0911--TCCGCGAA-ATAGAGGC_1.fq.gz
+    zcat TN1901R0911--TCCGCGAA-ATAGAGGC_2.fq.gz | head -n 45380492 /dev/stdin | gzip -c > ../TN1901R0911--TCCGCGAA-ATAGAGGC_2.fq.gz
+#join
