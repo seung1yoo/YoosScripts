@@ -51,6 +51,7 @@ def main(args):
     cmds = instance.make_cmd()
     for cmd in cmds:
         print(cmd)
+        #os.system(cmd)
 
 if __name__=='__main__':
     import argparse
