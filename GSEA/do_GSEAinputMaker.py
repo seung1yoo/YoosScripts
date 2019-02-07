@@ -225,7 +225,7 @@ if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--go-table', help='My go database',
-            default='~/YoosScripts/Databases/Ontology_Archives/gene_ontology_edit.obo.2016-06-01.table')
+            default='/Users/Yoo/YoosScripts/Databases/Ontology_Archives/gene_ontology_edit.obo.2016-06-01.table')
     parser.add_argument('-x', '--xls', help='genes.xls',
             default='gene.xls')
     parser.add_argument('-o', '--outdir', help='outdir name',
@@ -243,6 +243,7 @@ if __name__=='__main__':
     parser.add_argument('-gs', '--gsea-sample',
             default='S0001,G01:S0002,G01:S0003,G02:S0004,G02')
     parser.add_argument('-pks', '--primarykeys', nargs='+', help='Title_key GO_key Probe_key Gene_key Desc_keys(Name@Desc)',
-            default=['Order', 'GeneOntology', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
+            #default=['Order', 'GeneOntology', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
+            default=['GeneId', 'GeneOntology', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
     args = parser.parse_args()
     main(args)
