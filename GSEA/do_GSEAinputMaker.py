@@ -21,7 +21,7 @@ def annoDicMaker(xls, title_key, go_key, probe_key, gene_key, desc_keys, go_deli
             for desc_key in desc_keys:
                 desc_idxs.append(items.index(desc_key))
             continue
-        if items[go_idx] in ['-']:
+        if items[go_idx] in ['-', '0']:
             continue
         descs = []
         for desc_idx in desc_idxs:
