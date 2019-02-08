@@ -1,0 +1,10 @@
+Hokkaido_WGRS_pipeline
+├── HokkaidoSystemScience_script.1.py ==> For multi-sample project (Step1)
+├── HokkaidoSystemScience_script.2.py ==> For multi-sample project (Step2)
+├── HokkaidoSystemScience_script.3.py ==> Uploader
+├── HokkaidoSystemScience_script.py   ==> For only one sample project
+├── HokkaidoSystemScience_script.sh   ==> Example
+└── README
+
+
+
