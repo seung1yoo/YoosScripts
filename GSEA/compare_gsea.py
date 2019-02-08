@@ -110,6 +110,7 @@ class COMPARE_GSEA:
                 continue
             gs_term = items[idxDic['NAME']]
             p = float(items[idxDic['NOM p-val']])
+            #p = float(items[idxDic['NES']])
             gsDic.setdefault(gs_term, p)
         return gsDic
 
