@@ -1,3 +1,7 @@
+=====================================================================================================================================================================
+# Script Structure
+=====================================================================================================================================================================
+
 Hokkaido_WGRS_pipeline
 ├── HokkaidoSystemScience_script.1.py ==> For multi-sample project (Step1)
 ├── HokkaidoSystemScience_script.2.py ==> For multi-sample project (Step2)
@@ -7,4 +11,48 @@ Hokkaido_WGRS_pipeline
 └── README
 
 
+
+
+
+
+=====================================================================================================================================================================
+# 
+=====================================================================================================================================================================
+
+
+
+
+=====================================================================================================================================================================
+# LOG @2019.02.20
+=====================================================================================================================================================================
+
+## PROBLEM
+=====================================================================================================================================================================
+java -jar /BiO/BioPeople/siyoo/BioTools/picard/picard-tools-1.133/picard.jar CollectMultipleMetrics VALIDATION_STRINGENCY=LENIENT INPUT=Ig16834.final.bam OUTPUT=Ig16834.cmm.metrics
+
+[Wed Feb 20 12:46:40 KST 2019] picard.analysis.CollectMultipleMetrics INPUT=Ig16834.final.bam OUTPUT=Ig16834.cmm.metrics VALIDATION_STRINGENCY=LENIENT    ASSUME_SORTED=true STOP_AFTER=0 PROGRAM=[CollectAlignmentSummaryMetrics, CollectInsertSizeMetrics, QualityScoreDistribution, MeanQualityByCycle, CollectBaseDistributionByCycle] VERBOSITY=INFO QUIET=false COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_FILE=false GA4GH_CLIENT_SECRETS=client_secrets.json
+[Wed Feb 20 12:46:40 KST 2019] Executing as siyoo@titan on Linux 3.19.0-80-generic amd64; OpenJDK 64-Bit Server VM 1.7.0_171-b02; Picard version: 1.133(95818b6e611725775e29d3b4acbaa23747eb3e94_1433169311) IntelDeflater
+...
+INFO    2019-02-20 12:47:08     SinglePassSamProgram    Processed     1,000,000 records.  Elapsed time: 00:00:26s.  Time for last 1,000,000:   26s.  Last read position: 1:3,960,102
+...
+INFO    2019-02-20 12:02:15     RExecutor       Executing R script via command: Rscript /tmp/siyoo/script670691488110739399.R /BiO/BioProjects/TBO180562-Hokkaido-Dog-WGRS-20190208/Ig16834.cmm.metrics.insert_size_metrics /BiO/BioProjects/TBO180562-Hokkaido-Dog-WGRS-20190208/Ig16834.cmm.metrics.insert_size_histogram.pdf Ig16834.final.bam
+ERROR   2019-02-20 12:02:15     ProcessExecutor Rscript execution error: No such file or directory
+
+[Wed Feb 20 12:02:15 KST 2019] picard.analysis.CollectMultipleMetrics done. Elapsed time: 55.13 minutes.
+Runtime.totalMemory()=5663883264
+To get help, see http://broadinstitute.github.io/picard/index.html#GettingHelp
+Exception in thread "main" picard.PicardException: R script picard/analysis/insertSizeHistogram.R failed with return code 255
+        at picard.analysis.CollectInsertSizeMetrics.finish(CollectInsertSizeMetrics.java:153)
+        at picard.analysis.SinglePassSamProgram.makeItSo(SinglePassSamProgram.java:133)
+        at picard.analysis.CollectMultipleMetrics.doWork(CollectMultipleMetrics.java:177)
+        at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:206)
+        at picard.cmdline.PicardCommandLine.instanceMain(PicardCommandLine.java:95)
+        at picard.cmdline.PicardCommandLine.main(PicardCommandLine.java:105)
+=====================================================================================================================================================================
+
+## SOLUTION
+=====================================================================================================================================================================
+in titan, which Rscript ==> /BiO/BioTools/Rine/Tools/R/current/bin/Rscript ==> ERROR.
+in titan, which Rscript ==> /home/siyoo/miniconda3/bin/Rscript ==> OK.
+=====================================================================================================================================================================
 

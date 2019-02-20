@@ -58,7 +58,12 @@ def main(args):
                           '.cmm.metrics.quality_by_cycle_metrics',
                           '.cmm.metrics.quality_distribution.pdf',
                           '.cmm.metrics.quality_distribution_metrics'],
-              '04.CWM':  ['.cwm.metrics']}
+              '04.CWM':  ['.cwm.metrics'],
+              '05.UNMAP':['.unmapped_pair_R1.fq.gz',
+                          '.unmapped_pair_R2.fq.gz',
+                          '.unmapped_single_R1.fq.gz',
+                          '.unmapped_single_R2.fq.gz']}
+
     vcf = 'multisamples.var.raw.vcf.gz'
     #
     fileCheck = fileChecker(args.ids, extDic, vcf)
