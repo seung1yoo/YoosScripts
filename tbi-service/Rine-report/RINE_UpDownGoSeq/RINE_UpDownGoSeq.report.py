@@ -3,7 +3,7 @@ import os
 from RINE_UpDownGoSeq import ParserSelectDE
 
 
-def make_go_dic(go_enrich):
+def make_go_dic_v1(go_enrich):
     go_dic = dict()
     for line in open(go_enrich):
         items = line.rstrip('\n').split('\t')
@@ -16,6 +16,21 @@ def make_go_dic(go_enrich):
         category = items[idx_dic['Category']]
         name = items[idx_dic['Name']]
         desc = items[idx_dic['Description']]
+
+        go_dic.setdefault(go_id, {}).setdefault('category', category)
+        go_dic.setdefault(go_id, {}).setdefault('name', name)
+        go_dic.setdefault(go_id, {}).setdefault('desc', desc)
+
+    return go_dic
+
+def make_go_dic_v2(go_desc):
+    go_dic = dict()
+    for line in open(go_desc):
+        items = line.rstrip('\n').split('\t')
+        go_id = items[0]
+        category = items[1]
+        name = items[2]
+        desc = items[3]
 
         go_dic.setdefault(go_id, {}).setdefault('category', category)
         go_dic.setdefault(go_id, {}).setdefault('name', name)
@@ -89,7 +104,10 @@ def uploader(name_dic, fn_report, goseq_results):
     out.close()
 
 def main(args):
-    go_dic = make_go_dic(args.go_enrich)
+    if args.go_enrich:
+        go_dic = make_go_dic_v1(args.go_enrich)
+    elif args.go_description:
+        go_dic = make_go_dic_v2(args.go_description)
     goseq_dic = make_goseq_dic(args.goseq_results)
     #
     psde = ParserSelectDE(args)
@@ -106,8 +124,10 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('select_deg',
             help='Rine_Quant/analysis/select_de.gene.xls')
-    parser.add_argument('go_enrich',
+    parser.add_argument('--go_enrich',
             help='/BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/report/GO/go_enrich.xls')
+    parser.add_argument('--go_description',
+            help='/BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/output/Annotation/go_description.txt')
     parser.add_argument('goseq_results', nargs='+',
             help='*.goseq.wall.xls')
     parser.add_argument('p_cut', type=str)
