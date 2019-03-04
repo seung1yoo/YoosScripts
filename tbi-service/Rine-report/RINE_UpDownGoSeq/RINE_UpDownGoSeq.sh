@@ -8,5 +8,14 @@
     python RINE_UpDownGoSeq.py /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/analysis/select_de.gene.xls /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/output/GO/S0003_S0004-S0005_S0006.goseq.deg.xls /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/output/GO/S0003_S0004-S0005_S0006.goseq.len.xls /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/output/GO/S0003_S0004-S0005_S0006.goseq.mapping.xls S0003_S0004-S0005_S0006
 #join
 #fork
-    python RINE_UpDownGoSeq.report.py /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/analysis/select_de.gene.xls ./*.goseq.wall.xls 0.001 --go_enrich /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/report/GO/go_enrich.xls
+    python RINE_UpDownGoSeq.report.v1.py /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/analysis/select_de.gene.xls ./*.goseq.wall.xls 0.001 --go_enrich /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/report/GO/go_enrich.xls
+#join
+#fork
+    python RINE_UpDownGoSeq.report.v2.py /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/analysis/select_de.gene.xls ./*.goseq.wall.xls 0.001 --go_enrich /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/report/GO/go_enrich.xls
+#join
+#fork
+    python RINE_UpDownGoSeq.report.v2.py /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/analysis/select_de.gene.xls ./*.goseq.wall.xls 0.001 --go_description /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/output/Annotation/go_description.txt
+#join
+#fork
+    python RINE_UpDownGoSeq.report.v2.py /BiO/BioProjects/TBD180681-AJOU-Mouse-RNAref-20181115/Rine_Quant/analysis/select_de.gene.xls ./*.goseq.wall.xls 0.001 
 #join
