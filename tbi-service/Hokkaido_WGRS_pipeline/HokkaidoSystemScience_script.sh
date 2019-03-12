@@ -2,7 +2,7 @@
 
 ===== TBO190048-Hokkaido-Cat-WGRS-20190312 =======================================================================================================================================================
 #fork
-    python HokkaidoSystemScience_script.1.py -f Raw/Sample1_1.fq.gz -r Raw/Sample1_2.fq.gz -s Ig17064
+    python HokkaidoSystemScience_script.1.py -f Raw/TN1902D0330_1.fq.gz -r Raw/TN1902D0330_2.fq.gz -s Ig17064 -g Ref/Felis_catus.Felis_catus_9.0.dna.toplevel.fa -t make_cmd
 #join
 #fork
     python HokkaidoSystemScience_script.2.py --finalBams Ig17064.final.bam
