@@ -11,22 +11,17 @@ def fileFinder(path, extension, firstTag, secondTag):
         if not afile:
             continue
         fileName = afile.split('/')[-1].split('.{0}'.format(extension))[0]
-        print fileName
         if fileName.endswith(firstTag):
-            sampleName = fileName.strip(firstTag)
+            sampleName = fileName[:-len(firstTag)]
             fileDic.setdefault(sampleName, {}).setdefault('R1', os.path.abspath(afile))
         elif not secondTag:
             continue
         elif fileName.endswith(secondTag):
-            sampleName = fileName.strip(secondTag)
+            sampleName = fileName[:-len(secondTag)]
             fileDic.setdefault(sampleName, {}).setdefault('R2', os.path.abspath(afile))
         else:
-            #print("ERROR: Check the Tag arguments")
-            #import sys
-            #sys.exit()
             pass
     #
-    print fileDic
     return fileDic
 
 def exe_FasterFastqStatistics(script, rs):
@@ -36,7 +31,7 @@ def exe_FasterFastqStatistics(script, rs):
     else:
         cmd = '{0} {1}'.format(script, ' '.join(rs))
         print(cmd)
-        os.system(cmd)
+        #os.system(cmd)
     return rstFile
 
 def make_summary(rstDic, outFile):
@@ -55,12 +50,10 @@ def make_summary(rstDic, outFile):
     out.close()
 
 def main(args):
-    print(args)
     fileDic = fileFinder(args.path, args.extension, args.firstTag, args.secondTag)
     #
     rstDic = dict()
-    for sampleName, tagDic in fileDic.items():
-        print (sampleName, tagDic)
+    for sampleName, tagDic in sorted(fileDic.items()):
         if 'R1' in tagDic and 'R2' in tagDic:
             r1 = tagDic['R1']
             r2 = tagDic['R2']
@@ -90,7 +83,7 @@ if __name__=='__main__':
     parser.add_argument('-p', '--path', help='The PATH for file search',
             default='/BiO/BioProjects/TBD170409-SCHU-Fungi-smallRNA-20170818/Rawdata')
     parser.add_argument('-e', '--extension', help='File extension to search', default='fq.gz')
-    parser.add_argument('-1', '--firstTag', help='first read tag keyword', default='1')
+    parser.add_argument('-1', '--firstTag', help='first read tag keyword', default='_1')
     parser.add_argument('-2', '--secondTag', help='second read tag keyword', default='')
     parser.add_argument('-o', '--outFile', help='Summary file', default='SequenceInfo.fastq.Report.xls')
     args = parser.parse_args()
