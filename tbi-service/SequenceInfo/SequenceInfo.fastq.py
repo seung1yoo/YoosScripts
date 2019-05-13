@@ -84,7 +84,7 @@ if __name__=='__main__':
             default='/BiO/BioProjects/TBD170409-SCHU-Fungi-smallRNA-20170818/Rawdata')
     parser.add_argument('-e', '--extension', help='File extension to search', default='fq.gz')
     parser.add_argument('-1', '--firstTag', help='first read tag keyword', default='_1')
-    parser.add_argument('-2', '--secondTag', help='second read tag keyword', default='')
+    parser.add_argument('-2', '--secondTag', help='second read tag keyword', default='_2')
     parser.add_argument('-o', '--outFile', help='Summary file', default='SequenceInfo.fastq.Report.xls')
     args = parser.parse_args()
     main(args)
