@@ -46677,3 +46677,4 @@ GO:0006712	biological_process	mineralocorticoid catabolic process
 GO:0090657	biological_process	telomeric loop disassembly
 GO:0098990	biological_process	AMPA selective glutamate receptor signaling pathway
 GO:0198738	biological_process	cell-cell signaling by wnt
+GO:0070994	biological_process	detection of oxidative stress
