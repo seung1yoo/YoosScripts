@@ -1,62 +1,65 @@
 import os
 import math
 
-def gsDicMaker(anno_table, xls):
-    gsDic = dict()
-    for line in open(anno_table):
-        items = line.strip('\n').split('\t')
-        gsDic.setdefault(items[0], items[2])
-    return gsDic
+def goDescDicMaker(go_table):
+    goDescDic = dict()
+    for line in open(go_table):
+        items = line.strip().split('\t')
+        goDescDic.setdefault(items[0], items[2])
+    #
+    return goDescDic
 
-def annoDicMaker(xls, title_key, gs_key, probe_key, gene_key, desc_keys, delimiter):
+def annoDicMaker(xls, title_key, go_key, probe_key, gene_key, desc_keys, go_delimiter):
     annoDic = dict()
     for line in open(xls):
         items = line.strip().split('\t')
         if items[0] in [title_key]:
-            gs_idx = items.index(gs_key)
+            go_idx = items.index(go_key)
             probe_idx = items.index(probe_key)
             gene_idx = items.index(gene_key)
             desc_idxs = []
             for desc_key in desc_keys:
                 desc_idxs.append(items.index(desc_key))
             continue
-        if items[gs_idx] in ['-', '0']:
+        if items[go_idx] in ['-', '0']:
             continue
         descs = []
         for desc_idx in desc_idxs:
             descs.append(items[desc_idx])
         desc = '@'.join(descs)
-        for gs in items[gs_idx].split(delimiter):
-            gs = gs.strip("\"")
-            annoDic.setdefault(gs, {}).setdefault(\
+        for go in items[go_idx].split(go_delimiter):
+            go = go.strip("\"")
+            annoDic.setdefault(go, {}).setdefault(\
 		items[probe_idx], \
 		(items[gene_idx], desc))
+    #
+    print ('## No. Gene Ontology in {0} : {1}'.format(xls, len(annoDic)))
     return annoDic
 
-def gmtMaker(outprefix, gsDic, annoDic):
+def gmtMaker(outprefix, goDescDic, annoDic):
     out = open('{0}.gmt'.format(outprefix), 'w')
-    for gs, probeDic in annoDic.items():
+    for go, probeDic in annoDic.items():
         gs_genesDic = dict()
         for probe, infos in probeDic.items():
             gs_genesDic.setdefault(infos[0], 0)
-        if gs in gsDic:
-            gs_desc = gsDic[gs].upper()
+        if go in goDescDic:
+            go_desc = goDescDic[go].upper()
         else:
-            print ('{0} has no description !!!!!'.format(gs))
+            print ('{0} has no description !!!!!'.format(go))
             import sys
             sys.exit()
         import re
-        gs_desc = gs_desc.replace("/","").replace("'",\
+        go_desc = go_desc.replace("/","").replace("'",\
 			"").replace("#","").replace("?","")
         out.write('{0}\t{1}\t{2}\n'.format(\
-		gs_desc, gs, '\t'.join(gs_genesDic.keys())))
+		go_desc, go, '\t'.join(gs_genesDic.keys())))
     out.close()
     #
     return '{0}.gmt'.format(outprefix)
 
 def chipMaker(outprefix, annoDic):
     chipDic = dict()
-    for gs, probeDic in annoDic.items():
+    for go, probeDic in annoDic.items():
         for probe, infos in probeDic.items():
             chipDic.setdefault(probe, infos)
     #
@@ -164,10 +167,10 @@ def expMaker(outprefix, expDic, samples, orderedSamples):
     #
     return '{0}.exp.txt'.format(outprefix)
 
-def gseaSampleParser(sample_info):
+def gseaSampleParser(gsea_sample):
     gseaSampleDic = dict()
-    for sample_group in sample_info.split(','):
-        sample, group = sample_group.split(':')
+    for sample_group in gsea_sample.split(':'):
+        sample, group = sample_group.split(',')
         gseaSampleDic.setdefault(group, []).append(sample)
     #
     orderedSamples = []
@@ -194,30 +197,24 @@ def clsMaker(outprefix, gseaSampleDic, orderedSamples):
     return '{0}.cls'.format(outprefix)
 
 def main(args):
-
     title_key = args.primarykeys[0]
-    gs_key = args.primarykeys[1]
+    go_key = args.primarykeys[1]
     probe_key = args.primarykeys[2]
     gene_key = args.primarykeys[3]
     desc_keys = args.primarykeys[4].split('@')
-
-    #### take Gene-Set infos.
-    gsDic = gsDicMaker(args.anno_table, args.xls)
-    annoDic = annoDicMaker(args.xls, title_key, gs_key, probe_key, gene_key, desc_keys, args.delimiter)
-
+    #### take GO infos.
+    goDescDic = goDescDicMaker(args.go_table)
+    annoDic = annoDicMaker(args.xls, title_key, go_key, probe_key, gene_key, desc_keys, args.go_delimiter)
     #### make the output prefix
     if not os.path.isdir('{0}'.format(args.outdir)):
         os.system('mkdir -p {0}'.format(args.outdir))
-    outprefix = '{0}/{1}'.format(args.outdir, args.prefix)
-
+    outprefix = '{0}/{1}'.format(args.outdir, args.species)
     #### make gmt & chip
-    gmt_file = gmtMaker(outprefix, gsDic, annoDic)
+    gmt_file = gmtMaker(outprefix, goDescDic, annoDic)
     chip_file = chipMaker(outprefix, annoDic)
-
     #### make cls
-    gseaSampleDic, orderedSamples = gseaSampleParser(args.sample_info)
+    gseaSampleDic, orderedSamples = gseaSampleParser(args.gsea_sample)
     cls_file = clsMaker(outprefix, gseaSampleDic, orderedSamples)
-
     #### make exp
     expDic, expOutDic, samples, log2fc_cols, v_cols = expFilter(\
             args.xls, args.log2fc, args.statistics, args.value, \
@@ -227,16 +224,26 @@ def main(args):
 if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--anno-table', default='./DO_HumanDO.obo.totDOLst.txt')
-    parser.add_argument('--xls', default='./01.gene.de.mod.DO.xls')
-    parser.add_argument('--outdir', default='./gsea')
-    parser.add_argument('--prefix', default='mouse')
-    parser.add_argument('--log2fc', default=0)
-    parser.add_argument('--statistics', choices=('p','q'), default='p')
-    parser.add_argument('--value', default=1)
-    parser.add_argument('--delimiter', default=',')
-    parser.add_argument('--sample-info', default='Test_1:Con,Test_2:Con,Test_3:Case,Test_4:Case')
-    parser.add_argument('--primarykeys', nargs='+', help='Title_key GS_key Probe_key Gene_key Desc_keys(Name@Desc)',
-            default=['GeneId', 'DO clust', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
+    parser.add_argument('-g', '--go-table', help='My go database',
+            default='/Users/Yoo/YoosScripts/Databases/Ontology_Archives/gene_ontology_edit.obo.2016-06-01.table')
+    parser.add_argument('-x', '--xls', help='genes.xls',
+            default='gene.xls')
+    parser.add_argument('-o', '--outdir', help='outdir name',
+            default='./')
+    parser.add_argument('-s', '--species', help='species name or prefix name',
+            default='test_species')
+    parser.add_argument('-f', '--log2fc', help='exp table filter',
+            default=0)
+    parser.add_argument('-m', '--statistics', choices=('p','q'),
+            default='p')
+    parser.add_argument('-v', '--value', help='filter value p-value or q-value',
+            default=1)
+    parser.add_argument('-gd', '--go-delimiter',
+            default=',')
+    parser.add_argument('-gs', '--gsea-sample',
+            default='S0001,G01:S0002,G01:S0003,G02:S0004,G02')
+    parser.add_argument('-pks', '--primarykeys', nargs='+', help='Title_key GO_key Probe_key Gene_key Desc_keys(Name@Desc)',
+            #default=['Order', 'GeneOntology', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
+            default=['GeneId', 'GeneOntology', 'GeneId', 'GeneAcc', 'GeneName@Desc'])
     args = parser.parse_args()
     main(args)
