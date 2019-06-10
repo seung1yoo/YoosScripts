@@ -1893,6 +1893,7 @@ def build_blast_p_idx(fa_fn) :
     return fa_fn
 
 def build_dict_idx(fa_fn) :
+    print fa_fn
     dict_fn=None
     if fa_fn.endswith(".fa") :
         dict_fn="%s.dict"%(fa_fn[:-3])
