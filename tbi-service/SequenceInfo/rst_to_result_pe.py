@@ -39,7 +39,7 @@ def main(args):
 				TotalQ30Rate  = TotalQ30     * 100.0 / TotalLength
 				TotalQ20Rate  = TotalQ20     * 100.0 / TotalLength
 
-				outline.append("_".join(statFile.split('/')[1].split('.')[0].split('_')[:-1]))
+				outline.append(statFile)
 				outline.append(str(TotalReadCnt))
 				outline.append(str(TotalLength))
 				outline.append(str(TotalLengthGB))
