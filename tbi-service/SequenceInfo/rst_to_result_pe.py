@@ -1,9 +1,12 @@
 
+import json
+
 def main(args):
-	statFileList = args.rst
+    sample_dic = json.load(open(args.conf_json))
+	statFileList = sample_dic.keys()
 
 	f2 = open(args.outfn, 'w')
-	f2.write('SampleID\tTotalReads\tTotalBases\tTotalBases(Gb)\tGC_Count\tGC_Rate\tN_ZeroReads\tN_ZeroReadsRate\tN5_LessReads\tN5_LessReadsRate\tN_Count\tN_Rate\tQ30_MoreBases\tQ30_MoreBasesRate\tQ20_MoreBases\tQ20_MoreBasesRate\n')
+	f2.write('SampleID\tTBI_ID\tTotalReads\tTotalBases\tTotalBases(Gb)\tGC_Count\tGC_Rate\tN_ZeroReads\tN_ZeroReadsRate\tN5_LessReads\tN5_LessReadsRate\tN_Count\tN_Rate\tQ30_MoreBases\tQ30_MoreBasesRate\tQ20_MoreBases\tQ20_MoreBasesRate\n')
 
 	TotalReadCnt = 0
 	TotalLength  = 0
@@ -14,7 +17,7 @@ def main(args):
 	TotalQ30     = 0
 	TotalQ20     = 0
 
-	for statFile in statFileList :
+	for statFile, infoDic in sample_dic.items():
 		subf = open(statFile, 'r')
 		outline = []
 
@@ -39,7 +42,8 @@ def main(args):
 				TotalQ30Rate  = TotalQ30     * 100.0 / TotalLength
 				TotalQ20Rate  = TotalQ20     * 100.0 / TotalLength
 
-				outline.append(statFile)
+				outline.append(infoDic['cst_id'])
+				outline.append(infoDic['tbi_id'])
 				outline.append(str(TotalReadCnt))
 				outline.append(str(TotalLength))
 				outline.append(str(TotalLengthGB))
@@ -62,7 +66,7 @@ def main(args):
 if __name__ == "__main__" :
 	import argparse
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--rst', nargs='+')
+	parser.add_argument('--conf-json')
 	parser.add_argument('--outfn')
 	args = parser.parse_args()
 	main(args)
