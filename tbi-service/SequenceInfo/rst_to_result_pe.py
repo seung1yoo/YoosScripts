@@ -2,8 +2,7 @@
 import json
 
 def main(args):
-    sample_dic = json.load(open(args.conf_json))
-	statFileList = sample_dic.keys()
+	sample_dic = json.load(open(args.conf_json))
 
 	f2 = open(args.outfn, 'w')
 	f2.write('SampleID\tTBI_ID\tTotalReads\tTotalBases\tTotalBases(Gb)\tGC_Count\tGC_Rate\tN_ZeroReads\tN_ZeroReadsRate\tN5_LessReads\tN5_LessReadsRate\tN_Count\tN_Rate\tQ30_MoreBases\tQ30_MoreBasesRate\tQ20_MoreBases\tQ20_MoreBasesRate\n')
@@ -18,14 +17,12 @@ def main(args):
 	TotalQ20     = 0
 
 	for statFile, infoDic in sample_dic.items():
-		subf = open(statFile, 'r')
 		outline = []
-
-		for stats in subf.xreadlines() :
+		for stats in open(statFile):
 			if stats.startswith('#') :
 				continue
 			else :
-				words        = stats.split("\t")
+				words        = stats.strip('\n').split("\t")
 				TotalReadCnt = int(words[0])
 				TotalLength  = int(words[1])
 				TotalGCCnt   = int(words[2])
