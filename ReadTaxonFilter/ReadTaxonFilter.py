@@ -13,7 +13,7 @@ class ReadTaxonFilter():
                 ','.join(self.taxons))
         #
         self.annoFile = self.annoFile_checker(annoFile)
-        self.cleanReadDic = self.annoFile_parser()
+        self.cleanReadDic, self.dirtyReadDic = self.annoFile_parser()
         #
         self.readDic = self.reads_checker(reads)
         self.reads_filter(outDir)
@@ -35,11 +35,21 @@ class ReadTaxonFilter():
                 for title, seq, qual in FastqGeneralIterator(aDic['handle']):
                     total_n += 1
                     readId = title.split()[0]
-                    if readId in self.cleanReadDic:
+
+                    ## use cleanReadDic
+                    #if readId in self.cleanReadDic:
+                    #    out_handle.write("@{0}\n{1}\n+\n{2}\n".format(title, seq, qual))
+                    #    clean_n += 1
+                    #else:
+                    #    filter_n += 1
+
+                    ## use dirtyReadDic
+                    if readId in self.dirtyReadDic:
+                        filter_n += 1
+                    else:
                         out_handle.write("@{0}\n{1}\n+\n{2}\n".format(title, seq, qual))
                         clean_n += 1
-                    else:
-                        filter_n += 1
+
                 print '# reads_filter : {3} : clean / total * 100 = {0}/{1}*100 = {2}%'.format(\
                         clean_n, total_n, clean_n/float(total_n)*100, self.sample)
             #
@@ -108,6 +118,7 @@ class ReadTaxonFilter():
 
     def annoFile_parser(self):
         cleanReadDic = dict()
+        dirtyReadDic = dict()
         with open(self.annoFile, 'r') as annoHandle:
             for line in annoHandle:
                 items = line.rstrip('\n').split('\t')
@@ -122,12 +133,14 @@ class ReadTaxonFilter():
                 for taxon in items[idxDic['TaxName']].split(';'):
                     if taxon.upper() in self.taxons:
                         filterOut = 1
+                        dirtyReadDic.setdefault(readId, None)
                 #
                 if filterOut in [0]:
                     cleanReadDic.setdefault(readId, None)
                 #
         print '# annoFile_parser : No. clean read {1}'.format(self.annoFile, len(cleanReadDic))
-        return cleanReadDic
+        print '# annoFile_parser : No. dirty read {1}'.format(self.annoFile, len(dirtyReadDic))
+        return cleanReadDic, dirtyReadDic
 
 
 
