@@ -7,9 +7,9 @@ def kaas_q1_parser(infile):
             continue
         #
         if line.startswith('A'):
-            hierarchy_a = line.rstrip('\n').split('>')[1].split('<')[0]
-        elif line.startswith('B') and '>' in line:
-            hierarchy_b = line.rstrip('\n').split('>')[1].split('<')[0]
+            hierarchy_a = line.rstrip('\n')[1:].strip()
+        elif line.startswith('B'):
+            hierarchy_b = line.rstrip('\n')[1:].strip()
         elif line.startswith('C'):
             items = line[1:].rstrip('\n').split()
             keggBrite_id = 'Ko{0}'.format(items[0]) # ko id
