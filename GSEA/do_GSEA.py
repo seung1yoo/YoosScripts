@@ -8,7 +8,7 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric, per
     if not os.path.isdir(outdir):
         os.system('mkdir -p {0}'.format(outdir))
     #
-    command = '''java -Xmx512m -cp {0} xtools.gsea.Gsea \
+    command = '''java -Xmx1024m -cp {0} xtools.gsea.Gsea \
     -res  {1} \
     -cls  {2}#{3} \
     -gmx  {4} \
@@ -22,7 +22,7 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric, per
     -order descending -create_gcts true -create_svgs true \
     -include_only_symbols true -make_sets true -median false \
     -num 100 -plot_top_x 50 -rnd_seed timestamp -save_rnd_lists false \
-    -set_max 500 -set_min 5 -zip_report false \
+    -set_max 500 -set_min 15 -zip_report false \
     -gui false'''.format(jar, exp, cls, pair, gmt, chip, outdir, rpt_label, metric, permute)
     #
     return command
