@@ -3,8 +3,9 @@
 
 
 class DAVID:
-    def __init__(self, david_fn, anno_cate):
+    def __init__(self, david_fn, anno_colname_s,  anno_cate):
         self.david_fn = david_fn
+        self.anno_colname_s = anno_colname_s
         self.anno_cate = anno_cate
 
     def parse_david_anno_table(self):
@@ -20,20 +21,46 @@ class DAVID:
                     idx_dic.setdefault(item, idx)
                 continue
             #
-            if len(items) <= idx_dic[self.anno_cate]:
-                continue
             _id_s = [x.strip() for x in items[idx_dic['ID']].split(',')]
-            _anno_s = self.parse_anno_string(items[idx_dic[self.anno_cate]])
+            _anno_s = list()
+            for anno_colname in self.anno_colname_s:
+                if self.anno_cate in ['KEGG_PATHWAY']:
+                    _anno_s.extend(self.parse_anno_string_for_KEGG(items[idx_dic[anno_colname]]))
+                elif self.anno_cate in ['GeneOntology']:
+                    _anno_s.extend(self.parse_anno_string_for_GO(items[idx_dic[anno_colname]]))
+            #
             for _id in _id_s:
                 for _anno in _anno_s:
-                    if not _anno:
+                    if _anno in ['@']:
                         continue
-                    anno_id, anno_desc = _anno.split(':')
+                    anno_id, anno_desc = _anno.split('@')
                     self.anno_dic.setdefault(anno_id, anno_desc)
                     self.gene_dic.setdefault(_id, {}).setdefault(anno_id, anno_desc)
         #
         print('annotated gene ==> {0}'.format(len(self.gene_dic)))
         print('annotation ==> {0}'.format(len(self.anno_dic)))
+
+    def parse_anno_string_for_KEGG(self, string):
+        _anno_s = list()
+        for sub in string.split(','):
+            if not ':' in sub:
+                continue
+            if not sub:
+                continue
+            anno_id, anno_desc = sub.split(':')
+            _anno_s.append('{0}@{1}'.format(anno_id, anno_desc))
+        return _anno_s
+
+    def parse_anno_string_for_GO(self, string):
+        _anno_s = list()
+        for sub in string.split(','):
+            if not '~' in sub:
+                continue
+            if not sub:
+                continue
+            anno_id, anno_desc = sub.split('~')
+            _anno_s.append('{0}@{1}'.format(anno_id, anno_desc))
+        return _anno_s
 
     def parse_anno_string(self, string):
         _anno_s = list()
@@ -72,7 +99,8 @@ class DAVID:
                 #
                 out_fh.write('{0}\t{1}\n'.format('\t'.join(items), self.anno_cate))
                 continue
-            _id = items[idx_dic['GeneAcc']]
+            #_id = items[idx_dic['GeneAcc']]
+            _id = items[idx_dic['GeneId']]
             if _id in self.gene_dic:
                 items.append(','.join(sorted(self.gene_dic[_id].keys())))
             else:
@@ -82,13 +110,8 @@ class DAVID:
 
 
 
-
-
-
-
-
 def main(args):
-    david = DAVID(args.david_fn, args.anno_cate)
+    david = DAVID(args.david_fn, args.anno_colname_s, args.anno_cate)
     david.parse_david_anno_table()
     david.write_david_anno_table()
     david.write_anno_genes(args.genes_fn, args.out_fn)
@@ -102,8 +125,9 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--david-fn',
             default='/Volumes/TBI_siyoo/TBI_NonHumanTeam/Report-repository/TBD180681/GSEA_20190409/tr_C0A76205A3D21554775920385.txt')
-    parser.add_argument('--anno-cate',
-            default='KEGG_PATHWAY')
+    parser.add_argument('--anno-colname-s', nargs='+',
+            default=['KEGG_PATHWAY'])
+    parser.add_argument('--anno-cate', choices=('KEGG_PATHWAY','GeneOntology'), default='KEGG_PATHWAY')
     parser.add_argument('--genes-fn',
             default='/Volumes/TBI_siyoo/TBI_NonHumanTeam/Report-repository/TBD180681/GSEA_20190409/gene.de.xls')
     parser.add_argument('--out-fn',
