@@ -1,0 +1,251 @@
+#
+VERSION 1
+#
+# ==========================================================
+#          Parameters
+# ----------------------------------------------------------
+PARAMS  TARGET      CODING
+# REFERENCE_TYPE    [GENOME|CDNA|UNIGENE]
+PARAMS  REF_TYPE    GENOME
+# LEVEL [GENE|TRANSCRIPT]
+PARAMS  LEVEL       TRANSCRIPT
+PARAMS  BLAST_DB    SWISS
+PARAMS  E_VAL       1e-5
+PARAMS  EX_METHOD   CUFFLINKS
+# DE anaysis
+# DE_TARGET [ALL|CODING]
+PARAMS  DE_METHOD   CUFFDIFF
+PARAMS  DE_TARGET   CODING
+# ----------------------------------------------------------
+#   [DEFAULT|[[FC|PV|QV|EX]=[VALUE]]]
+#   Examples
+#       FC=2.0
+#       QV=0.01
+#       PV=0.01
+#       EX=1.0
+#       FC=2.0:QV=0.1
+PARAMS  DE_CUTOFF_TCC   0.10
+PARAMS  DE_CUTOFF       FC=2.0:PV=0.05
+# ----------------------------------------------------------
+PARAMS  GO_ENRICH       0.001
+PARAMS  GO_ENRICH_METHOD    GOSEQ
+# ----------------------------------------------------------
+PARAMS  KEGG_ENRICH     0.001
+PARAMS  TIME_FC_CUTOFF  2.0
+# ----------------------------------------------------------
+PARAMS  FILTER_EXP      ref
+PARAMS  FILTER_DENOVO      denovo
+PARAMS  FILTER_VARI     snp
+PARAMS  FILTER_FUS      fusion
+# ----------------------------------------------------------
+#PARAMS  VCF_ANNO        NORMAL
+# ==========================================================
+## Rerun for DEG
+#RUN_MODE    1   2490, 2610,2615, 2710
+#RUN_MODE    1   6670
+#RUN_MODE    1   9100, 9210,9220, 9260,9270, 9310,9320, 9360
+##
+# ==========================================================
+#          Pipeline
+# ----------------------------------------------------------
+RNA-seq             10      0 0 <PATH> <INPUT> <LEVEL> <REF_TYPE>
+#
+# GENESET               H_sapiens_Ens69.chr.gtf
+# GENESET_GTF           H_sapiens_Ens69.chr.gtf
+# GENESET_CODING        H_sapiens_Ens69.chr.gtf
+# GENESET_GTF_CODING    H_sapiens_Ens69.chr.gtf
+# GENOME_FA     H_sapiens_Ens69.chr.fa
+# BWA_IDX       H_sapiens_Ens69.chr.fa
+# CHRO_BWAIDX   H_sapiens_Ens69.chr.fa
+# CDNA_FA       Homo_sapiens.GRCh37.69.cdna.all.fa
+#
+reference           20      0 0 10_HOME <INPUT>
+#
+# ==============================================================================
+# Filtering && QC
+# ----------------------------------------------------------
+# filter_v2 [HOME] [INPUT.IN] [None|ref]
+qc_fastqc           30      0 0 10_HOME <INPUT> [raw]
+fastqc2db           35      0 0 10_HOME <INPUT> 30_REPORT
+#filter_v2           50      0 0 10_PATH <INPUT> <FILTER_EXP> [0.1] [20] [0.4] [0]
+cleanup_adaptor     40      2 0 10_PATH <INPUT> [MRNA] [DENOVO] [20] [50]
+cleanup_filter      50      2 0 10_PATH 40_NEW_IN <FILTER_DENOVO> [0.1] [20] [0.20] [20] [20] [50]
+filter2db           60      0 0 10_HOME 50_NEW_IN 50_REPORT
+#
+# ==== Preparing analysis ====
+prepare_html        90      0 0 10_REPORT 50_NEW_IN
+html_RNA-seq_ref    95      0 0 10_REPORT 50_NEW_IN
+html_RNA-seq_ref_help   100 0 0 10_REPORT 50_NEW_IN
+#
+# ==============================================================================
+# Read Mapping to CDNA [1000]
+# ----------------------------------------------------------
+bwa_7               1110    0 0 10_QC 50_NEW_IN [MEM] [CDNA] 20_RNA_FA [COORD]
+bam2depth           1150    0 0 10_QC 50_NEW_IN 1110_REPORT
+depth_stat          1160    0 0 10_QC 50_NEW_IN [ALL] [50] 1150_REPORT
+depth_stat2db       1165    0 0 10_QC 50_NEW_IN 1160_RANDOMNESS 1160_COVERAGE
+# ----------------------------------------------------------
+qc_flagstat         1250    0 0 10_QC 50_NEW_IN 1110_REPORT
+flagstat2db         1255    0 0 10_QC 50_NEW_IN 1250_MTX
+## --------------------------------------------------------------------
+## Check Non-Coding
+## --------------------------------------------------------------------
+#bwa_7               1510    0 0 10_QC 50_NEW_IN [MEM] [NCRNA] 20_NCRNA_FA [COORD]
+#qc_flagstat         1520    0 0 10_QC 50_NEW_IN 1510_REPORT
+#idxstats            1530    0 0 10_QC 50_NEW_IN 1510_REPORT
+##
+# ====================================================================
+# Read Mapping
+# --------------------------------------------------------------------
+sampling            2110    0 0 10_ANALYSIS 50_NEW_IN [1000000]
+bwa                 2120    0 0 10_ANALYSIS 2110_NEW_IN [GENOME] 20_GENOME_FA [COORD]
+sam_stat            2125    0 0 10_ANALYSIS 50_NEW_IN 2120_REPORT
+tophat              2130    0 0 10_ANALYSIS 50_NEW_IN 2125_REPORT 20_GENOME_BOWTIE 20_GENESET
+#
+qc_rseqc_bam        2170    0 0 10_ANALYSIS 50_NEW_IN 2130_REPORT
+rseqc2db            2180    0 0 10_ANALYSIS 50_NEW_IN 2170_REPORT
+#
+## ====================================================================
+## UNMAPPED check
+## --------------------------------------------------------------------
+#bam2fa              2180    0 0 10_ANALYSIS 50_NEW_IN [UNMAP] [FLAG] 2130_REPORT
+#sampling_v2         2185    0 0 10_ANALYSIS 50_NEW_IN [FA] [UNMAP] [100000] 2180_REPORT
+#blast_plus          2190    0 0 10_ANALYSIS 50_NEW_IN [BLASTX] [0.00001] [UNMAP:SAMPLING] <BLAST_DB> 2185_REPORT
+#blast_stat          2195    0 0 10_ANALYSIS 50_NEW_IN [FORMAT=TSV:SWISS:blastx] [1e-10] 2190_REPORT
+#
+# ====================================================================
+# Report
+# --------------------------------------------------------------------
+html_samples        2195    0 0 10_REPORT 50_NEW_IN 30_SUMMARY
+#
+# == Prdiction Gene Structure ==
+# cufflinks [GUIDE|QUANT] [NORMAL | HIGHSENSE | LOWDEPTH]
+cufflinks           2200    0 0 10_ANALYSIS 50_NEW_IN [QUANT] [NORMAL] 2130_REPORT 20_GENESET_CODING 20_GENESET_MASK2
+#cuffmerge           2205    0 0 10_ANALYSIS 50_NEW_IN 20_GENESET
+#
+# === DB Building ===
+db_gene_model       2210    0 0 10_OUTPUT 50_NEW_IN  20_GENESET
+ref_db_update       2220    0 0 10_OUTPUT 50_NEW_IN
+#
+select_gene_repr    2230    0 0 10_OUTPUT 50_NEW_IN [LENGTH]
+gene_repr2db        2235    0 0 10_OUTPUT 50_NEW_IN 2230_GENE_TRANSCRIPT
+#
+# ====================================================================
+# Annotation
+# --------------------------------------------------------------------
+# DB Type   RFAM, SWISS, TREMBL, NCBI_NR
+# Format    FLAT, XML, TAB, TAC
+export_fa_select    2240    0 0 10_OUTPUT 50_NEW_IN 2230_GENE_TRANSCRIPT
+blast_plus          2250    0 0 10_OUTPUT 50_NEW_IN [BLASTX] <E_VAL> [EXPORT] <BLAST_DB> 2240_REPORT
+blastx2db           2255    0 0 10_OUTPUT 50_NEW_IN <E_VAL> 2250_REPORT
+#
+update_gene         2260    0 0 10_OUTPUT 50_NEW_IN [INIT] <E_VAL>
+update_gene         2265    0 0 10_OUTPUT 50_NEW_IN <BLAST_DB> <E_VAL>
+update_gene         2270    0 0 10_OUTPUT 50_NEW_IN [REF] <E_VAL>
+db_go_annot         2280    0 0 10_OUTPUT 50_NEW_IN
+#
+db2geneset          2300    0 0 10_OUT_ASSEMBLY 50_NEW_IN [NO]
+#
+# ====================================================================
+# Update Expression
+# --------------------------------------------------------------------
+cufflinks           2310    0 0 10_OUTPUT 50_NEW_IN [QUANT] [NORMAL] 2130_REPORT 2300_GENESET_CODING 2300_GENESET_MASK
+cufflinks2db        2320    0 0 10_OUTPUT 50_NEW_IN 2310_REPORT
+#
+# ====================================================================
+# DEG
+# --------------------------------------------------------------------
+cuffdiff            2410    0 0 10_ANALYSIS 50_NEW_IN [NORMAL] 2130_REPORT 2300_GENESET_CODING 2300_GENESET_MASK
+cuffdiff2db         2420    0 0 10_ANALYSIS 50_NEW_IN 2410_REPORT
+#
+#htseq-count         2470    0 0 10_ANALYSIS 50_NEW_IN [NONEMPTY] 2130_REPORT 2300_GENESET
+#TCC_deg             2480    0 0 10_ANALYSIS 50_NEW_IN <DE_TARGET> <DE_CUTOFF_TCC> 2470_MTX
+#deg2db              2485    0 0 10_ANALYSIS 50_NEW_IN [1.0] 2480_DEG 
+select_de           2490    0 0 10_ANALYSIS 50_NEW_IN <DE_TARGET> <DE_METHOD> <DE_CUTOFF> <EX_METHOD>
+#
+# ====================================================================
+# Enrichment 
+# --------------------------------------------------------------------
+export_go           2600    0 0 10_OUTPUT 50_NEW_IN
+goseq               2610    0 0 10_OUTPUT 50_NEW_IN <DE_TARGET> [CUFFDIFF] 2230_GENE_TRANSCRIPT 2600_GENE_GO_W_ANCH
+go_enrich2db        2615    0 0 10_OUTPUT 50_NEW_IN 2610_ENRICH
+# --------------------------------------------------------------------
+#keggpathway         2710    0 0 10_REP_PATHWAY 50_NEW_IN <DE_METHOD>
+#MSigDB              2720    0 0 10_REPORT 50_NEW_IN <DE_TARGET> <DE_METHOD>
+# --------------------------------------------------------------------
+#time_series         3100    1 0 10_REP_TIMESERIES 50_NEW_IN <DE_TARGET> <TIME_FC_CUTOFF> <GO_ENRICH>
+#
+## ====================================================================
+## SNP analysis
+## --------------------------------------------------------------------
+#filter_v2           4000    2 0 10_PATH <INPUT> <FILTER_VARI> [0.1] [20] [0.20] [20]
+#qc_fastqc           4010    0 0 10_HOME 4000_NEW_IN [q20]
+## --------------------------------------------------------------------
+#SNPiR_mapping       4130    0 0 10_SNP 4000_NEW_IN [SNPiRnJUN95] 20_SNPiRnJUN95 [COORD]
+#bam2dedupl          4140    0 0 10_SNP 4000_NEW_IN [SNPiR] 4130_REPORT
+#bam2remove          4150    0 0 10_SNP 4000_NEW_IN [SNPiR:DEDUP] [20] [YES] 4140_REPORT
+#bam2reorder         4160    0 0 10_SNP 4000_NEW_IN [SNPiR:DEDUP:REMOVE] 20_GENOME_FA 4150_REPORT
+#bam_split           4170    0 0 10_SNP 4000_NEW_IN [SNPiR:DEDUP:REORDER] 4160_REPORT
+## -------------------------------------------------------------------
+#GATK_realign        4210    0 0 10_SNP 4000_NEW_IN [SNPiR:DEDUP:REMOVE:CHR] 4170_REPORT
+#GATK_recal          4220    0 0 10_SNP 4000_NEW_IN [SNPiR:REALIGN:CHR] 4210_REPORT
+#bam_merge           4240    0 0 10_SNP 4000_NEW_IN [SNPiR:CHR] 4220_REPORT
+#SNPiR_calling       4250    0 0 10_SNP 4000_NEW_IN [SNPiR:BAM:MERGED] 4240_REPORT
+#SNPiR_filtering     4260    0 0 10_SNP 4000_NEW_IN [SNPiR:MERGED] 4250_REPORT
+#snpEff              4420    0 0 10_SNP 4000_NEW_IN <VCF_ANNO> [SNPiR:FILTERED:VCF] 4260_REPORT
+#variant2db          4430    0 0 10_SNP 4000_NEW_IN [TOOL=SNPEFF] 4420_REPORT    
+##vcf_annotator       4440    0 0 10_SNP 4000_NEW_IN [TOOL=SNPEFF] 4420_REPORT
+## --------------------------------------------------------------------
+##muTect              4510    0 0 10_SNP 4000_NEW_IN [DEDUP:PRIMARY:REORDER:CHR] 4170_REPORT
+##varscan             4530    0 0 10_SNP 4000_NEW_IN [DEDUP:PRIMARY:REORDER:CHR] 4170_REPORT
+##
+## ====================================================================
+## Fusion 
+## --------------------------------------------------------------------
+#filter_v2           5000    2 0 10_PATH <INPUT> <FILTER_FUS> [0.1] [20] [0.20] [0]
+#qc_fastqc           5010    0 0 10_HOME 5000_NEW_IN [q20]
+## --------------------------------------------------------------------
+#sampling            5110    0 0 10_FUSION 5000_NEW_IN [1000000]
+#bwa                 5120    0 0 10_FUSION 5110_NEW_IN [GENOME] 20_GENOME_FA [COORD]
+#sam_stat            5125    0 0 10_FUSION 5000_NEW_IN 5120_REPORT
+#tophat_fusion       5530    0 0 10_FUSION 5000_NEW_IN 5125_REPORT
+## --------------------------------------------------------------------
+#chimerascan         5540    0 0 10_FUSION 5000_NEW_IN
+#fusion2db           5550    0 0 10_FUSION 5000_NEW_IN 5540_FUSION
+## --------------------------------------------------------------------
+#defuse              5560    0 0 10_FUSION 5000_NEW_IN
+#fusion2db           5570    0 0 10_FUSION 5000_NEW_IN 5560_FUSION
+## --------------------------------------------------------------------
+#fusionmap           5580    0 0 10_FUSION 5000_NEW_IN
+#fusion2db           5590    0 0 10_FUSION 5000_NEW_IN 5580_FUSION
+##
+# ====================================================================
+# Report 
+# --------------------------------------------------------------------
+report              6000    0 0 10_REPORT 50_NEW_IN
+# --------------------------------------------------------------------
+db2geneset          6640    0 0 6000_ASSEMBLY 50_NEW_IN [YES]
+export_gene         6650    0 0 6000_ASSEMBLY 50_NEW_IN [0.0] <TARGET> <DE_METHOD>
+export_expression   6660    0 0 6000_EXPRESSION 50_NEW_IN [0.0] <TARGET>
+export_deg          6670    0 0 6000_DEG 50_NEW_IN <DE_TARGET> <DE_METHOD> <DE_CUTOFF>
+export_de           6680    0 0 6000_DEG 50_NEW_IN <DE_METHOD>
+export_go_enrich    6685    0 0 6000_GO  50_NEW_IN <DE_METHOD> <GO_ENRICH_METHOD> <GO_ENRICH>
+export_target       6690    0 0 6000_TARGET  50_NEW_IN <DE_METHOD>
+#export_variant      6700    0 0 6000_VARIANT 4000_NEW_IN [TOOL=SNPEFF] 4420_REPORT
+#export_fusion       6710    0 0 6000_FUSION  5000_NEW_IN [FILTERED:FUSION] 5540_REPORT 5560_REPORT 5580_REPORT
+# --------------------------------------------------------------------
+html_overview       9100    0 0 10_REPORT 50_NEW_IN <DE_METHOD> <GO_ENRICH> 6660_GENE 2610_REPORT
+html_expression     9160    0 0 6000_EXPRESSION 50_NEW_IN 6660_REPORT
+html_deg            9220    0 0 6000_DEG 50_NEW_IN <DE_TARGET> <DE_METHOD> 6670_REPORT
+#
+report_go           9260    0 0 6000_GO 50_NEW_IN <DE_METHOD> <GO_ENRICH_METHOD> <GO_ENRICH>
+html_go_enrich      9270    0 0 6000_GO 50_NEW_IN <DE_METHOD> <GO_ENRICH_METHOD> <GO_ENRICH> 2610_REPORT
+#
+#html_pathway        9360    0 0 6000_PATHWAY 50_NEW_IN <DE_METHOD> <KEGG_ENRICH> 2710_REPORT
+#html_timeseries     9370    0 0 6000_TIMESERIES 50_NEW_IN <DE_METHOD> <TIME_FC_CUTOFF> <GO_ENRICH>
+html_target         9510    0 0 6000_TARGET 50_NEW_IN <DE_METHOD>
+#html_variant        9520    0 0 6000_VARIANT 4000_NEW_IN
+#html_fusion         9530    0 0 6000_FUSION  5000_NEW_IN 6710_REPORT
+#
+html_gene           9610    0 0 10_REPORT 50_NEW_IN <TARGET>
+#
