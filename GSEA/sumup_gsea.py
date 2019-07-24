@@ -101,27 +101,36 @@ class SumupGSEA:
 
     def write_gs_table(self, filter_tag):
         outfh = open('{0}_{1}.{2}.table.xls'.format(args.prefix, args.nametag, filter_tag),'w')
+        outfh_top5 = open('{0}_{1}.{2}.TOP5.table.xls'.format(args.prefix, args.nametag, filter_tag),'w')
         headers = ['Nametag']
         headers.append('Phenotype')
+        headers.append('Rank')
         headers.append('gene-set name')
         headers.append('gene-set size')
         headers.append('Enrichment score')
         headers.append('NOM p')
         headers.append('FDR q')
         outfh.write('{0}\n'.format('\t'.join(headers)))
+        outfh_top5.write('{0}\n'.format('\t'.join(headers)))
         for phynotype, fv_dic in self.gs_table_dic.items():
+            rank = 0
             for fv, n_dic in sorted(fv_dic.items()):
                 for n, info_dic in sorted(n_dic.items()):
+                    rank += 1
                     a = info_dic
                     items = [args.nametag]
                     items.append(phynotype)
+                    items.append(str(rank))
                     items.append(a['name'])
                     items.append(a['size'])
                     items.append(a['es'])
                     items.append(a['nom_p'])
                     items.append(a['fdr_q'])
                     outfh.write('{0}\n'.format('\t'.join(items)))
+                    if rank <= 5:
+                        outfh_top5.write('{0}\n'.format('\t'.join(items)))
         outfh.close()
+        outfh_top5.close()
 
 
 def main(args):
