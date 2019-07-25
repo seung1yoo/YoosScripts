@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import math
+
 class COMPARE_GSEA:
     def __init__(self, conf, p_cut, prefix):
         self.conf = conf
@@ -13,17 +15,39 @@ class COMPARE_GSEA:
 
     def filterP(self, fn, subprefix):
         out = open('{0}.{1}.xls'.format(self.prefix, subprefix), 'w')
+        out_ml = open('{0}.{1}.minuslog.xls'.format(self.prefix, subprefix), 'w')
+
         for line in open(fn):
             items = line.rstrip('\n').split('\t')
             if items[0] in ['GENESET_TERM']:
                 out.write(line)
+                out_ml.write(line)
                 continue
+
             ps = [float(x) for x in items[1:]]
+
             if min(ps) < self.p_cut:
                 out.write(line)
+                #
+                new_items = [items[0]]
+                new_items.extend([self.p_to_minuslog(p) for p in ps])
+                out_ml.write('{0}\n'.format('\t'.join([str(item) for item in new_items])))
             else:
-                print items
+                pass
+
         out.close()
+        out_ml.close()
+
+    def p_to_minuslog(self, p, _max=10.0):
+        if p in [0.0]:
+            p_minuslog = _max
+        elif p in [1.0]:
+            p_minuslog = 0.00001
+        else:
+            p_minuslog = round(-math.log(p, 10), 5)
+        if p_minuslog > _max:
+            p_minuslog = _max
+        return p_minuslog
 
     def compare_gsea_writer(self, aDic, subprefix):
         out = open('{0}.{1}.xls'.format(self.prefix, subprefix), 'w')
@@ -112,6 +136,8 @@ class COMPARE_GSEA:
             p = float(items[idxDic['NOM p-val']])
             #p = float(items[idxDic['NES']])
             gsDic.setdefault(gs_term, p)
+
+
         return gsDic
 
 def main(args):
