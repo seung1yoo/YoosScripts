@@ -85,6 +85,8 @@ class SumupGSEA:
                 for idx, item in enumerate(items):
                     idx_dic.setdefault(item, idx)
                 continue
+            if not items[idx_dic[filter_name]]:
+                continue
             if float(items[idx_dic[filter_name]]) < float(filter_value):
                 fv = float(items[idx_dic[filter_name]])
                 n += 1 
