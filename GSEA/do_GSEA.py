@@ -22,7 +22,7 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric, per
     -order descending -create_gcts true -create_svgs true \
     -include_only_symbols true -make_sets true -median false \
     -num 100 -plot_top_x 50 -rnd_seed timestamp -save_rnd_lists false \
-    -set_max 500 -set_min 15 -zip_report false \
+    -set_max 100 -set_min 10 -zip_report false \
     -gui false'''.format(jar, exp, cls, pair, gmt, chip, outdir, rpt_label, metric, permute)
     #
     return command
@@ -49,7 +49,7 @@ if __name__=='__main__':
     parser.add_argument('-o', '--outdir', default='./')
     parser.add_argument('-rl', '--rpt-label', default='DEG001')
     parser.add_argument('-d', '--design', default='control,case')
-    parser.add_argument('-m', '--metric', choices=('Diff_of_Classes', 'Signal2Noise'), default='Signal2Noise')
-    parser.add_argument('-p', '--permute', choices=('phenotype', 'geneset'), default='phenotype')
+    parser.add_argument('-m', '--metric', choices=('Diff_of_Classes', 'Signal2Noise', 'tTest', 'Ratio_of_Classes', 'Euclidean'), default='Signal2Noise')
+    parser.add_argument('-p', '--permute', choices=('phenotype', 'geneset'), default='geneset')
     args = parser.parse_args()
     main(args)
