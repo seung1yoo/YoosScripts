@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def load_gmt(gmt):
     unit_count_s = list()
@@ -22,15 +23,22 @@ def main(args):
     print('mean   : {0}'.format(np.mean(array)))
     print('var    : {0}'.format(np.var(array)))
     print('std    : {0}'.format(np.std(array)))
-    print('max    : {0}'.format(np.max(array)))
-    print('min    : {0}'.format(np.min(array)))
     print('median : {0}'.format(np.median(array)))
+    print('min    : {0}'.format(np.min(array)))
+    print('Q1 : {0}'.format(np.percentile(array, 25)))
+    print('Q2 : {0}'.format(np.percentile(array, 50)))
+    print('Q3 : {0}'.format(np.percentile(array, 75)))
+    print('max    : {0}'.format(np.max(array)))
     #
     n, bins, patches = plt.hist(array, bins=100)
     #print(n)
     #print(bins)
     #print(patches)
     plt.savefig('stats_gmt.hist.png')
+    #
+
+    s = pd.Series(array)
+    print(s.describe())
 
 
 

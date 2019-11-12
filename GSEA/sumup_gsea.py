@@ -57,11 +57,18 @@ class SumupGSEA:
             a = info_dic
             items = [args.nametag]
             items.append(phynotype)
-            items.append(a['target'])
-            items.append(a['enriched'])
-            items.append(a['FDR25'])
-            items.append(a['P001'])
-            items.append(a['P005'])
+            if a:
+                items.append(a['target'])
+                items.append(a['enriched'])
+                items.append(a['FDR25'])
+                items.append(a['P001'])
+                items.append(a['P005'])
+            else:
+                items.append('0')
+                items.append('0')
+                items.append('0')
+                items.append('0')
+                items.append('0')
             outfh.write('{0}\n'.format('\t'.join(items)))
         outfh.close()
 

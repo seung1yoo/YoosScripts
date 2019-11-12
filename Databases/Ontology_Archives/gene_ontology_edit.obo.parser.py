@@ -7,7 +7,6 @@ def term_iter(input):
         else:
             block.append(line.strip())
     yield block
-    return block
 
 def main(args):
     goDic = dict()

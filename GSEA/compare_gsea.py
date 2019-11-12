@@ -3,15 +3,16 @@
 import math
 
 class COMPARE_GSEA:
-    def __init__(self, conf, p_cut, prefix):
+    def __init__(self, conf, cut_key, cut_value, prefix):
         self.conf = conf
-        self.p_cut = float(p_cut)
+        self.cut_key = cut_key
+        self.cut_value = float(cut_value)
         self.prefix = prefix
         #
         self.gseaDic = self.merge_report()
-        result_fn = self.compare_gsea_writer(self.gseaDic, 'origin')
+        result_fn = self.compare_gsea_writer(self.gseaDic, '{0}.origin'.format(self.cut_key))
         #
-        self.filterP(result_fn, 'P{0}'.format(str(self.p_cut)).replace('.',''))
+        self.filterP(result_fn, '{0}{1}'.format(self.cut_key, str(self.cut_value)).replace('.',''))
 
     def filterP(self, fn, subprefix):
         out = open('{0}.{1}.xls'.format(self.prefix, subprefix), 'w')
@@ -26,7 +27,7 @@ class COMPARE_GSEA:
 
             ps = [float(x) for x in items[1:]]
 
-            if min(ps) < self.p_cut:
+            if min(ps) < self.cut_value:
                 out.write(line)
                 #
                 new_items = [items[0]]
@@ -133,22 +134,30 @@ class COMPARE_GSEA:
                     idxDic.setdefault(item, idx)
                 continue
             gs_term = items[idxDic['NAME']]
-            p = float(items[idxDic['NOM p-val']])
-            #p = float(items[idxDic['NES']])
-            gsDic.setdefault(gs_term, p)
+            if self.cut_key in ['p']:
+                value = float(items[idxDic['NOM p-val']])
+            elif self.cut_key in ['q']:
+                value = float(items[idxDic['FDR q-val']])
+            elif self.cut_key in ['es']:
+                value = float(items[idxDic['NES']])
+            else:
+                print("cut_key must be ['p','q','es']")
+                sys.exit()
+            gsDic.setdefault(gs_term, value)
 
 
         return gsDic
 
 def main(args):
     print args
-    compair_gsea = COMPARE_GSEA(args.conf, args.p_cut, args.prefix)
+    compair_gsea = COMPARE_GSEA(args.conf, args.cut_key, args.cut_value, args.prefix)
 
 if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('conf')
-    parser.add_argument('p_cut')
+    parser.add_argument('cut_key', choices=('q','p','es'))
+    parser.add_argument('cut_value')
     parser.add_argument('prefix')
     args = parser.parse_args()
     main(args)
