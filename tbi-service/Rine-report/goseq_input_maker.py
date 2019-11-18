@@ -20,7 +20,7 @@ class GOSEQ_INPUT_MAKER:
             #
             g_id = items[idx_dic['test_id']]
             g_locus = sorted(items[idx_dic['locus']].split(':')[1].split('-'))
-            g_len = int(g_locus[-1])-int(g_locus[0])
+            g_len = abs(int(g_locus[-1])-int(g_locus[0]))+1
             out.write('{0}\t{1}\n'.format(g_id, g_len))
         out.close()
 
