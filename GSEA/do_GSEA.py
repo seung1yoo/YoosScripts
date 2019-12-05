@@ -7,8 +7,8 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric, per
     import os
     if not os.path.isdir(outdir):
         os.system('mkdir -p {0}'.format(outdir))
-    #
-    command = '''java -Xmx1024m -cp {0} xtools.gsea.Gsea \
+    # with jar
+    _command = '''java -Xmx1024m -cp {0} xtools.gsea.Gsea \
     -res  {1} \
     -cls  {2}#{3} \
     -gmx  {4} \
@@ -24,6 +24,23 @@ def command_maker(jar, chip, cls, exp, gmt, outdir, rpt_label, pair, metric, per
     -num 100 -plot_top_x 50 -rnd_seed timestamp -save_rnd_lists false \
     -set_max 100 -set_min 5 -zip_report false \
     -gui false'''.format(jar, exp, cls, pair, gmt, chip, outdir, rpt_label, metric, permute)
+    #~/YoosScripts/GSEA/GSEA_4.0.2/gsea-cli.sh
+    command = '''{0} GSEA \
+    -res  {1} \
+    -cls  {2}#{3} \
+    -gmx  {4} \
+    -chip {5} \
+    -out  {6} \
+    -rpt_label {7} \
+    -metric {8} \
+    -permute {9} \
+    -collapse false -mode Max_probe -norm meandiv -nperm 1000 \
+    -rnd_type no_balance -scoring_scheme weighted -sort real \
+    -order descending -create_gcts true -create_svgs true \
+    -include_only_symbols true -make_sets true -median false \
+    -num 100 -plot_top_x 50 -rnd_seed timestamp -save_rnd_lists false \
+    -set_max 100 -set_min 5 -zip_report false \
+    '''.format(jar, exp, cls, pair, gmt, chip, outdir, rpt_label, metric, permute)
     #
     return command
 

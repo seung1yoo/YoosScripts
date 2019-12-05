@@ -40,7 +40,7 @@ def gmtMaker(outprefix, gsDic, annoDic):
         for probe, infos in probeDic.items():
             gs_genesDic.setdefault(infos[0], 0)
         if gs in gsDic:
-            gs_desc = gsDic[gs].upper()
+            gs_desc = gsDic[gs].lower()
         else:
             print ('{0} has no description !!!!!'.format(gs))
             import sys
@@ -48,6 +48,9 @@ def gmtMaker(outprefix, gsDic, annoDic):
         import re
         gs_desc = gs_desc.replace("/","").replace("'",\
 			"").replace("#","").replace("?","")
+        if len(gs_genesDic.keys()) < 5:
+            print ('{0} has {1} members !!!!!'.format(gs, str(len(gs_genesDic.keys()))))
+            continue
         out.write('{0}\t{1}\t{2}\n'.format(\
 		gs_desc, gs, '\t'.join(gs_genesDic.keys())))
     out.close()
