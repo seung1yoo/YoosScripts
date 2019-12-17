@@ -49701,3 +49701,7 @@ GO:0070526	biological_process	tRNA threonylcarbamoyladenosine modification_alt1
 GO:0070527	biological_process	platelet aggregation
 GO:0070524	molecular_function	11-beta-hydroxysteroid dehydrogenase (NADP+) activity
 GO:0070525	biological_process	tRNA threonylcarbamoyladenosine metabolic process
+GO:0140326	molecular_function	ATPase-coupled intramembrane lipid transporter activity
+GO:0120196	biological_process	negative regulation of anther dehiscence
+GO:0062091	cellular_component	Ycf2/FtsHi complex
+GO:0106167	biological_process	extracellular ATP signaling

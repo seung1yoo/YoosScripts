@@ -45,6 +45,7 @@ def gmtMaker(outprefix, gsDic, annoDic):
             print ('{0} has no description !!!!!'.format(gs))
             import sys
             sys.exit()
+            continue
         import re
         gs_desc = gs_desc.replace("/","").replace("'",\
 			"").replace("#","").replace("?","")
