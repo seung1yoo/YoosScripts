@@ -32,7 +32,7 @@ def main(args):
             print 'There are not genes in {0}'.format(pattern)
         if info_dic['GO.R'] and not info_dic['GO.wall']:
             print '{0} have to re-run'.format(pattern)
-            cmd = '/BiO/BioTools/R/R-3.1.1/bin/R CMD BATCH {0}'.format(
+            cmd = '{0} CMD BATCH {1}'.format(args.r_path,
                     os.path.join(args.path, '{0}.{1}.GO.R'.format(args.ts_id, pattern)))
             print cmd
             os.system(cmd)
@@ -42,5 +42,6 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--path', default='./')
     parser.add_argument('--ts-id', default='TS001')
+    parser.add_argument('--r-path', default='/export/home/siyoo/miniconda2/envs/goseq/bin/R')
     args = parser.parse_args()
     main(args)
