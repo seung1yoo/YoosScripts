@@ -85,8 +85,8 @@ class UPLOAD:
                     if not os.path.exists(target): os.symlink('{0}_fastqc'.format(base_name), target)
 
     def exe_sshpass(self):
-        cmd = "sshpass -p '{0}' scp -r {1}/* {2}@{3}:{4}".format(
-            self.password, self.link_dir, self.id, self.host, self.upload_dir)
+        cmd = "sshpass -p '{0}' scp -P {5} -r {1}/* {2}@{3}:{4}".format(
+            self.password, self.link_dir, self.id, self.host, self.upload_dir, args.port)
         print cmd
         os.system(cmd)
 
@@ -105,6 +105,7 @@ if __name__=='__main__':
     parser.add_argument('--samplein', default='./sample.quant.in')
     parser.add_argument('--link-dir', default='./Upload')
     parser.add_argument('--host', default='59.18.159.30')
+    parser.add_argument('--port', default='2022')
     parser.add_argument('--id', default='CDC_Yjh')
     parser.add_argument('--password', default='CDC_dlvmflxm2YJH')
     parser.add_argument('--upload-dir', default='/BiO/Live/CDC_Yjh/TBD180495_20180827/0.RawData')
