@@ -1,0 +1,18 @@
+{
+    "/bio/siyoo/Deliver/RawReadDelivery/AutoDelivery/data/TBD190746_8613_447_20191223/Sample_sample__bmo_sm__1_-2/sample__bmo_sm__1_-2_1.fq.gz.rst.xls": {
+        "tbi_id": "TN1912R0169", 
+        "cst_id": "sample__bmo_sm__1_-2"
+    }, 
+    "/bio/siyoo/Deliver/RawReadDelivery/AutoDelivery/data/TBD190746_8613_447_20191223/Sample_sample__bmo_sm__3_-2/sample__bmo_sm__3_-2_1.fq.gz.rst.xls": {
+        "tbi_id": "TN1912R0170", 
+        "cst_id": "sample__bmo_sm__3_-2"
+    }, 
+    "/bio/siyoo/Deliver/RawReadDelivery/AutoDelivery/data/TBD190746_8613_447_20191223/Sample_sample__3_-3ld-3/sample__3_-3ld-3_1.fq.gz.rst.xls": {
+        "tbi_id": "TN1912R0168", 
+        "cst_id": "sample__3_-3ld-3"
+    }, 
+    "/bio/siyoo/Deliver/RawReadDelivery/AutoDelivery/data/TBD190746_8613_447_20191223/Sample_sample__1_-3ld-2/sample__1_-3ld-2_1.fq.gz.rst.xls": {
+        "tbi_id": "TN1912R0167", 
+        "cst_id": "sample__1_-3ld-2"
+    }
+}
