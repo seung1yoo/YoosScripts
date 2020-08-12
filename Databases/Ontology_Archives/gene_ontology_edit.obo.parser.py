@@ -84,7 +84,8 @@ def main(args):
 if __name__=='__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', help='ftp://ftp.geneontology.org/go/ontology-archive//gene_ontology_edit.obo.2016-06-01.gz', default='gene_ontology_edit.obo.2016-06-01')
-    parser.add_argument('-o', '--output', default='gene_ontology_edit.obo.2016-06-01.table')
+    parser.add_argument('-i', '--input', help='ftp://ftp.geneontology.org/go/ontology-archive//gene_ontology_edit.obo.2016-06-01.gz',
+                        default='gene_ontology_edit.obo.2020-08-01')
+    parser.add_argument('-o', '--output', default='gene_ontology_edit.obo.2020-08-01.table')
     args = parser.parse_args()
     main(args)
