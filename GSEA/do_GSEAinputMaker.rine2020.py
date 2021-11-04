@@ -154,7 +154,7 @@ def expFilter(xls, log2fc, statistics, value, title_key, probe_key, gene_key, de
 
 def expMaker(outprefix, expDic, samples, orderedSamples):
     out = open('{0}.exp.txt'.format(outprefix), 'w')
-    out.write('NAME\tDESCRIPTION\t{0}\n'.format('\t'.join(orderedSamples)))
+    out.write('NAME\tDESCRIPTION\t{0}\n'.format('\t'.join([x.replace('-','') for x in orderedSamples])))
     #
     ordered_idxs = []
     for asample in orderedSamples:

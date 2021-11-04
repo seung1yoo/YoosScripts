@@ -13,7 +13,7 @@ def get_num_fasta(fa_fn):
 
 def split_fasta(fa_fn, cpus, tmp_dir='./tmp'):
     if not os.path.isdir(tmp_dir):
-        os.mkdir(tmp_dir)
+        os.makedirs(tmp_dir)
 
     expCountPerSubFa = round(get_num_fasta(fa_fn)/float(cpus), 0)
     obsCountPerSubFa = 0
@@ -71,7 +71,7 @@ def makeCmd(splitted_fn_s, database, program, evalue, prefix):
             cmd = '{0} -i {1} -d {2} -o {4}.{5:0>3}.{3}.xml -e {3} -m 7'.format(
                     get_program_path(program), splitted_fn, database, evalue, prefix, idx+1)
         else:
-            print '#ERROR : Check the program path.'
+            print('#ERROR : Check the program path.')
             sys.exit()
         cmds.append(cmd)
     return cmds
@@ -86,7 +86,7 @@ def execute(cmds, prefix):
     shell_fh.close()
 
 def main(args):
-    splitted_fn_s = split_fasta(args.query, args.cpus)
+    splitted_fn_s = split_fasta(args.query, args.cpus, os.path.join(args.prefix, 'tmp'))
     cmds = makeCmd(splitted_fn_s, args.database, args.program, args.evalue, args.prefix)
     execute(cmds, args.prefix)
 

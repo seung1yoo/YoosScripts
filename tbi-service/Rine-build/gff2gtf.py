@@ -5,7 +5,8 @@ import sys
 import copy
 import unittest
 
-GFF_READ="/BiO/BioTools/Rine/Tools/Cufflinks/current/gffread"
+#GFF_READ="/BiO/BioTools/Rine/Tools/Cufflinks/current/gffread"
+GFF_READ="gffread"
 
 TYPE_GENE_CODING=10
 TYPE_GENE_NONCODING=20
@@ -114,12 +115,12 @@ class Model :
     def __cmp__(self,other) :
         if other==None :
             return -1
-        
+
         if self._chr<other._chr :
             return -1
         if self._chr>other._chr :
             return 1
-        
+
         if self._type_mol in (TYPE_MOL_GENE,TYPE_MOL_TRAN) :
             if self.start()<other.start() :
                 return -1
@@ -271,7 +272,7 @@ def ConvertRomanNumeralToNumber(roman_numeral):
             key=lambda roman: len(roman_numerals[roman]),
             reverse=True):
         keep_converting = True
-        while keep_converting:            
+        while keep_converting:
             if roman_numeral.find(roman_numerals[numeral_value]) != -1:
                 number_result += numeral_value
                 is_init=True
@@ -284,7 +285,7 @@ def ConvertRomanNumeralToNumber(roman_numeral):
     if len(roman_numeral)>0 :
         return
     return number_result
- 
+
 def parse_attr_s(line) :
     attr_s={}
     buf=[]
@@ -319,7 +320,7 @@ def read_gtf_line(line,feature=None) :
 
     foo.tran_id=None
     foo.exon_number=None
-    
+
     if foo.feature.lower()=='exon'  :
         foo._type_mol=TYPE_MOL_EXON
     elif foo.feature.lower()=='cds'  :
@@ -447,7 +448,7 @@ def _update_transcript_coding_type(tran) :
         tran._coding_type=TYPE_GENE_CODING
     else :
         tran._coding_type=TYPE_GENE_CODING
-            
+
 
 def _update_gene_coding_type(gene) :
     has_coding=False
@@ -475,7 +476,7 @@ def _update_gene_coding_type(gene) :
         else :
             has_coding=True
             tran._coding_type=TYPE_GENE_CODING
-            
+
     if has_coding :
         gene._coding_type=TYPE_GENE_CODING
     elif has_linc :
@@ -538,7 +539,7 @@ def main() :
     gtf_fn=sys.argv[2]
 
     tmp_gtf_fn=gff_fn
-    
+
     if gff_fn.endswith(".gff") or gff_fn.endswith(".gff3") :
         tmp_gtf_fn="%s.raw.gtf"%(gff_fn[:-5])
         print "%s >> %s >> %s"%(gff_fn,tmp_gtf_fn,gtf_fn)
@@ -546,7 +547,7 @@ def main() :
             os.system("%s %s -o %s -T"%(GFF_READ,gff_fn,tmp_gtf_fn))
         else :
             print "PASS: FOUND RAW_GTF_FN %s"%(tmp_gtf_fn)
-        if (not os.path.exists(tmp_gtf_fn)) or os.path.getsize(tmp_gtf_fn)<2000 :
+        if (not os.path.exists(tmp_gtf_fn)) or os.path.getsize(tmp_gtf_fn)<1500 :
             print "ERROR: INCOMPLETE GTF: %s"%(tmp_gtf_fn)
             print "%s %s -o %s -T"%(GFF_READ,gff_fn,tmp_gtf_fn)
             return
@@ -623,7 +624,7 @@ def main() :
     out_rep.close()
 
 
-class TestSequenceFunctions(unittest.TestCase): 
+class TestSequenceFunctions(unittest.TestCase):
     def setUp(self):
         pass
     def test_sort(self):
@@ -648,7 +649,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
 class TestConvertRoman(unittest.TestCase):
     def setUp(self):
-        pass 
+        pass
     def test_run_non_roman(self):
         rst=ConvertRomanNumeralToNumber("CM001272.1")
         self.assertEqual(rst,None)
@@ -659,7 +660,7 @@ class TestConvertRoman(unittest.TestCase):
         rst=ConvertRomanNumeralToNumber("I")
         self.assertEqual(rst,1)
 
-    
+
 if __name__=='__main__' :
     main()
     #unittest.main()
