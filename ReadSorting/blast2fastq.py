@@ -6,7 +6,7 @@ class Blast2Fastq:
     def __init__(self, args):
         self.read_dic = dict()
         self.evalue = 1e-5
-        self.readcov = 50.0
+        self.readcov = 10.0
         self.alignsim = 70.0
 
         self.add_target_read(args.blast1, 'R1')
